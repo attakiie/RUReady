@@ -2,12 +2,12 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { ShoppingBag, Menu, X } from "lucide-react";
+import { ShoppingBag, Menu, X, User } from "lucide-react";
 import { useLanguage } from "@/app/contexts/LanguageContext";
 
 const nav = {
-  en: { shop: "Shop", categories: "Categories", about: "About" },
-  th: { shop: "ร้านค้า", categories: "หมวดหมู่", about: "เกี่ยวกับเรา" },
+  en: { shop: "Shop", categories: "Categories", about: "About", login: "Login", register: "Join" },
+  th: { shop: "ร้านค้า", categories: "หมวดหมู่", about: "เกี่ยวกับเรา", login: "เข้าสู่ระบบ", register: "สมัครสมาชิก" },
 };
 
 export default function Navbar() {
@@ -51,7 +51,23 @@ export default function Navbar() {
           </div>
 
           {/* Right Actions */}
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3">
+            {/* Desktop: Login + Register */}
+            <div className="hidden md:flex items-center gap-3">
+              <Link
+                href="/login"
+                className="text-xs font-semibold tracking-widest text-[#A5A5A5] hover:text-[#F5F5F5] transition-colors duration-200 uppercase"
+              >
+                {t.login}
+              </Link>
+              <Link
+                href="/register"
+                className="text-xs font-semibold tracking-widest bg-[#D32F3A] hover:bg-[#A02029] text-[#F5F5F5] px-4 py-1.5 uppercase transition-colors duration-200"
+              >
+                {t.register}
+              </Link>
+            </div>
+
             {/* Language Toggle */}
             <button
               onClick={toggle}
@@ -89,6 +105,15 @@ export default function Navbar() {
             <MobileNavLink href="/shop" onClick={() => setMenuOpen(false)}>{t.shop}</MobileNavLink>
             <MobileNavLink href="/categories" onClick={() => setMenuOpen(false)}>{t.categories}</MobileNavLink>
             <MobileNavLink href="/about" onClick={() => setMenuOpen(false)}>{t.about}</MobileNavLink>
+            <div className="h-px bg-[#2B2B2E]" />
+            <MobileNavLink href="/login" onClick={() => setMenuOpen(false)}>{t.login}</MobileNavLink>
+            <Link
+              href="/register"
+              onClick={() => setMenuOpen(false)}
+              className="inline-flex items-center gap-2 bg-[#D32F3A] text-[#F5F5F5] font-semibold text-sm px-4 py-2.5 tracking-widest uppercase"
+            >
+              <User size={14} /> {t.register}
+            </Link>
           </div>
         </div>
       )}
