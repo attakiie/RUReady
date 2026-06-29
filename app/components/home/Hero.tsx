@@ -191,17 +191,13 @@ export default function Hero() {
               <div className="absolute top-0 left-0 w-12 h-12 border-t-2 border-l-2 border-[#D32F3A]" />
               <div className="absolute bottom-0 right-0 w-12 h-12 border-b-2 border-r-2 border-[#D32F3A]" />
 
-              {/* Center content — replace with real image later */}
-              <div className="absolute inset-0 flex flex-col items-center justify-center bg-[#1A1A1C]">
-                <div
-                  className="text-[120px] leading-none text-[#2B2B2E] font-display select-none"
-                  style={{ fontFamily: "'Bebas Neue', sans-serif" }}
-                >
-                  RUR
-                </div>
-                <span className="text-[#2B2B2E] text-xs tracking-widest uppercase mt-2">
-                  {t.athletePhoto}
-                </span>
+              {/* Shooter illustration */}
+              <div className="absolute inset-0 bg-[#1A1A1C] overflow-hidden">
+                <img
+                  src="/images/hero-shooter.svg"
+                  alt="Action Air shooter"
+                  className="w-full h-full object-cover"
+                />
               </div>
 
               {/* Floating tag */}

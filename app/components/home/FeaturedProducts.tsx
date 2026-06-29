@@ -5,9 +5,9 @@ import { ArrowRight } from "lucide-react";
 import { useLanguage } from "@/app/contexts/LanguageContext";
 
 const products = [
-  { id: "et-1000", name: "ET-1000 Green Gas", price: 230, tag: "Best Seller", available: true, slug: "et-1000-green-gas" },
-  { id: "topgas-12kg", name: "Top Gas 12kg", price: 260, tag: "New", available: true, slug: "top-gas-12kg" },
-  { id: "mini-popper", name: "Mini Popper", price: 180, tag: "IPSC", available: true, slug: "mini-popper" },
+  { id: "et-1000", name: "ET-1000 Green Gas", price: 230, tag: "Best Seller", available: true, slug: "et-1000-green-gas", img: "/images/prod-et1000.svg" },
+  { id: "topgas-12kg", name: "Top Gas 12kg", price: 260, tag: "New", available: true, slug: "top-gas-12kg", img: "/images/prod-topgas.svg" },
+  { id: "mini-popper", name: "Mini Popper", price: 180, tag: "IPSC", available: true, slug: "mini-popper", img: "/images/prod-popper.svg" },
 ];
 
 const copy = {
@@ -77,6 +77,7 @@ type Product = {
   tag: string;
   available: boolean;
   slug: string;
+  img: string;
 };
 
 type Copy = typeof copy.en;
@@ -92,14 +93,12 @@ function ProductCard({ product, t }: { product: Product; t: Copy }) {
             {product.tag}
           </span>
 
-          {/* Placeholder — replace with <Image> when photos are ready */}
-          <div
-            className="text-[72px] leading-none text-[#2B2B2E] select-none font-display group-hover:scale-105 transition-transform duration-300"
-            style={{ fontFamily: "'Bebas Neue', sans-serif" }}
-            aria-hidden
-          >
-            {product.name.charAt(0)}
-          </div>
+          {/* Product illustration */}
+          <img
+            src={product.img}
+            alt={product.name}
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+          />
 
           {/* Hover overlay */}
           <div className="absolute inset-0 bg-[#D32F3A] opacity-0 group-hover:opacity-[0.06] transition-opacity duration-200" />

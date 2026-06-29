@@ -1,0 +1,116 @@
+<svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="canBody" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#1C1C1F"/>
+      <stop offset="35%" stop-color="#2A2A2D"/>
+      <stop offset="65%" stop-color="#252528"/>
+      <stop offset="100%" stop-color="#141416"/>
+    </linearGradient>
+    <linearGradient id="canSheen" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#F5F5F5" stop-opacity="0.06"/>
+      <stop offset="40%" stop-color="#F5F5F5" stop-opacity="0.02"/>
+      <stop offset="100%" stop-color="#F5F5F5" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="labelGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#D32F3A"/>
+      <stop offset="100%" stop-color="#A02029"/>
+    </linearGradient>
+    <pattern id="grid2" width="30" height="30" patternUnits="userSpaceOnUse">
+      <path d="M30 0L0 0 0 30" fill="none" stroke="#F5F5F5" stroke-width="0.4" opacity="0.04"/>
+    </pattern>
+  </defs>
+
+  <!-- BG -->
+  <rect width="400" height="400" fill="#0F0F10"/>
+  <rect width="400" height="400" fill="url(#grid2)"/>
+
+  <!-- Shadow -->
+  <ellipse cx="200" cy="375" rx="68" ry="9" fill="#000" opacity="0.7"/>
+
+  <!-- ── CAN BODY ── -->
+  <!-- Main cylinder -->
+  <rect x="144" y="105" width="112" height="256" fill="url(#canBody)"/>
+  <!-- Rounded caps via ellipses -->
+  <!-- Top dome -->
+  <ellipse cx="200" cy="105" rx="56" ry="14" fill="#232326"/>
+  <!-- Bottom dome -->
+  <ellipse cx="200" cy="361" rx="56" ry="13" fill="#141416"/>
+  <!-- Bottom ring -->
+  <ellipse cx="200" cy="355" rx="56" ry="8" fill="#1A1A1D"/>
+
+  <!-- Sheen (left edge highlight) -->
+  <rect x="144" y="105" width="22" height="256" fill="url(#canSheen)"/>
+
+  <!-- ── SHOULDER / NECK ── -->
+  <!-- Shoulder taper -->
+  <polygon points="144,105 162,72 238,72 256,105" fill="#1E1E21"/>
+  <ellipse cx="200" cy="105" rx="56" ry="14" fill="#232326"/>
+  <ellipse cx="200" cy="72" rx="38" ry="10" fill="#2A2A2D"/>
+
+  <!-- ── VALVE / NOZZLE ── -->
+  <!-- Valve body -->
+  <rect x="180" y="46" width="40" height="28" rx="6" fill="#2E2E32"/>
+  <!-- Valve collar -->
+  <rect x="184" y="56" width="32" height="8" rx="2" fill="#3A3A3E"/>
+  <!-- Nozzle tip -->
+  <rect x="188" y="30" width="24" height="18" rx="5" fill="#D32F3A"/>
+  <!-- Nozzle cap ring -->
+  <ellipse cx="200" cy="30" rx="13" ry="5" fill="#A02029"/>
+  <!-- Nozzle opening -->
+  <ellipse cx="200" cy="30" rx="6" ry="3" fill="#0F0F10"/>
+  <!-- Valve safety ring -->
+  <rect x="178" y="42" width="44" height="6" rx="3" fill="#D32F3A" opacity="0.4"/>
+
+  <!-- ── LABEL BAND ── -->
+  <rect x="144" y="160" width="112" height="138" fill="url(#labelGrad)"/>
+  <!-- Label top edge -->
+  <rect x="144" y="157" width="112" height="5" fill="#FF3A45" opacity="0.3"/>
+  <!-- Label bottom edge -->
+  <rect x="144" y="295" width="112" height="5" fill="#7A1520" opacity="0.5"/>
+
+  <!-- Label content -->
+  <!-- Product name -->
+  <text x="200" y="196" font-family="Arial Black,Arial,sans-serif" font-size="26" font-weight="900" fill="#F5F5F5" text-anchor="middle" letter-spacing="1">ET-1000</text>
+  <!-- Divider -->
+  <rect x="164" y="202" width="72" height="1.5" fill="#F5F5F5" opacity="0.3"/>
+  <!-- Sub label -->
+  <text x="200" y="220" font-family="Arial,sans-serif" font-size="10" font-weight="bold" fill="#F5F5F5" text-anchor="middle" letter-spacing="2.5" opacity="0.9">GREEN GAS</text>
+  <!-- Spec line -->
+  <text x="200" y="240" font-family="Arial,sans-serif" font-size="8" fill="#F5F5F5" text-anchor="middle" letter-spacing="1" opacity="0.65">HIGH PERFORMANCE PROPELLANT</text>
+  <!-- Warning / pressure info -->
+  <rect x="158" y="250" width="84" height="24" rx="2" fill="#0F0F10" opacity="0.25"/>
+  <text x="200" y="263" font-family="Arial,sans-serif" font-size="7.5" fill="#F5F5F5" text-anchor="middle" opacity="0.7" letter-spacing="0.5">FOR GBB PISTOLS</text>
+  <text x="200" y="273" font-family="Arial,sans-serif" font-size="7" fill="#F5F5F5" text-anchor="middle" opacity="0.5">MAX. PRESSURE 145 PSI</text>
+
+  <!-- Hazard stripe (bottom of label) -->
+  <rect x="144" y="280" width="112" height="14" fill="#0F0F10" opacity="0.2"/>
+  <text x="200" y="291" font-family="Arial,sans-serif" font-size="7" fill="#F5F5F5" text-anchor="middle" opacity="0.5" letter-spacing="3">⚠ FLAMMABLE</text>
+
+  <!-- ── BODY DETAILS (above/below label) ── -->
+  <!-- Scan/barcode area at base -->
+  <rect x="162" y="316" width="76" height="28" rx="2" fill="#1A1A1D"/>
+  <!-- Barcode lines -->
+  <g fill="#0F0F10" opacity="0.6">
+    <rect x="166" y="320" width="1.5" height="18"/>
+    <rect x="169" y="320" width="2.5" height="18"/>
+    <rect x="174" y="320" width="1.5" height="18"/>
+    <rect x="177" y="320" width="3" height="18"/>
+    <rect x="182" y="320" width="1.5" height="18"/>
+    <rect x="185" y="320" width="2" height="18"/>
+    <rect x="189" y="320" width="1.5" height="18"/>
+    <rect x="192" y="320" width="3" height="18"/>
+    <rect x="197" y="320" width="1.5" height="18"/>
+    <rect x="200" y="320" width="2.5" height="18"/>
+    <rect x="205" y="320" width="1.5" height="18"/>
+    <rect x="208" y="320" width="2" height="18"/>
+    <rect x="212" y="320" width="1.5" height="18"/>
+    <rect x="215" y="320" width="3" height="18"/>
+    <rect x="220" y="320" width="1.5" height="18"/>
+    <rect x="223" y="320" width="2" height="18"/>
+    <rect x="227" y="320" width="1.5" height="18"/>
+    <rect x="230" y="320" width="2" height="18"/>
+  </g>
+
+  <!-- RU READY brand mark (small, above label) -->
+  <text x="200" y="148" font-family="Arial Black,Arial,sans-serif" font-size="9" font-weight="900" fill="#D32F3A" text-anchor="middle" letter-spacing="2" opacity="0.7">R U READY</text>
+</svg>

@@ -1,0 +1,139 @@
+<svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="steelFace" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#2A2A2E"/>
+      <stop offset="35%" stop-color="#3C3C42"/>
+      <stop offset="65%" stop-color="#353538"/>
+      <stop offset="100%" stop-color="#1E1E21"/>
+    </linearGradient>
+    <linearGradient id="steelBase" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#1A1A1D"/>
+      <stop offset="50%" stop-color="#28282C"/>
+      <stop offset="100%" stop-color="#141416"/>
+    </linearGradient>
+    <linearGradient id="scratchH" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#F5F5F5" stop-opacity="0"/>
+      <stop offset="50%" stop-color="#F5F5F5" stop-opacity="0.05"/>
+      <stop offset="100%" stop-color="#F5F5F5" stop-opacity="0"/>
+    </linearGradient>
+    <pattern id="grid4" width="30" height="30" patternUnits="userSpaceOnUse">
+      <path d="M30 0L0 0 0 30" fill="none" stroke="#F5F5F5" stroke-width="0.4" opacity="0.04"/>
+    </pattern>
+  </defs>
+
+  <rect width="400" height="400" fill="#0F0F10"/>
+  <rect width="400" height="400" fill="url(#grid4)"/>
+
+  <!-- Floor shadow -->
+  <ellipse cx="200" cy="382" rx="90" ry="7" fill="#000" opacity="0.8"/>
+
+  <!-- ── BASE FRAME (A-frame / box base) ── -->
+  <!-- Base side feet -->
+  <rect x="110" y="340" width="180" height="34" rx="4" fill="url(#steelBase)"/>
+  <!-- Base top edge -->
+  <rect x="110" y="340" width="180" height="5" rx="2" fill="#303034"/>
+  <!-- Base divot (middle ground contact) -->
+  <rect x="108" y="362" width="184" height="10" rx="3" fill="#141416"/>
+  <!-- Ground contact strips -->
+  <rect x="112" y="368" width="50" height="6" rx="2" fill="#1E1E21"/>
+  <rect x="238" y="368" width="50" height="6" rx="2" fill="#1E1E21"/>
+  <!-- Base bolt details -->
+  <circle cx="130" cy="350" r="5" fill="#1E1E21"/>
+  <circle cx="130" cy="350" r="3" fill="#141416"/>
+  <circle cx="130" cy="350" r="1.5" fill="#D32F3A" opacity="0.5"/>
+  <circle cx="270" cy="350" r="5" fill="#1E1E21"/>
+  <circle cx="270" cy="350" r="3" fill="#141416"/>
+  <circle cx="270" cy="350" r="1.5" fill="#D32F3A" opacity="0.5"/>
+  <circle cx="200" cy="350" r="4" fill="#1E1E21"/>
+  <circle cx="200" cy="350" r="2.5" fill="#141416"/>
+  <!-- Base label -->
+  <text x="200" y="358" font-family="Arial,sans-serif" font-size="7" fill="#D32F3A" text-anchor="middle" letter-spacing="2" opacity="0.6">MINI POPPER</text>
+
+  <!-- ── HINGE / PIVOT MECHANISM ── -->
+  <!-- Pivot post -->
+  <rect x="188" y="300" width="24" height="44" rx="2" fill="#252528"/>
+  <!-- Pivot pin -->
+  <rect x="182" y="316" width="36" height="10" rx="5" fill="#2E2E32"/>
+  <circle cx="182" cy="321" r="6" fill="#1E1E21"/>
+  <circle cx="182" cy="321" r="4" fill="#141416"/>
+  <circle cx="218" cy="321" r="6" fill="#1E1E21"/>
+  <circle cx="218" cy="321" r="4" fill="#141416"/>
+  <!-- Hinge bolts -->
+  <circle cx="200" cy="308" r="4" fill="#1E1E21"/>
+  <circle cx="200" cy="308" r="2.5" fill="#141416"/>
+  <circle cx="200" cy="336" r="4" fill="#1E1E21"/>
+  <circle cx="200" cy="336" r="2.5" fill="#141416"/>
+
+  <!-- ── POPPER PLATE (main face) ── -->
+  <!-- Plate shadow -->
+  <rect x="127" y="68" width="148" height="240" rx="3" fill="#0F0F10" opacity="0.4" transform="translate(3,3)"/>
+  <!-- Main steel plate -->
+  <rect x="126" y="66" width="148" height="238" rx="3" fill="url(#steelFace)"/>
+  <!-- Left edge shadow -->
+  <rect x="126" y="66" width="6" height="238" rx="2" fill="#111113"/>
+  <!-- Right edge highlight -->
+  <rect x="268" y="66" width="5" height="238" rx="2" fill="#484850"/>
+  <!-- Top edge highlight -->
+  <rect x="126" y="66" width="148" height="4" rx="2" fill="#484850"/>
+  <!-- Bottom edge shadow -->
+  <rect x="126" y="300" width="148" height="4" rx="2" fill="#111113"/>
+
+  <!-- Steel scratch / wear marks (horizontal) -->
+  <rect x="128" y="110" width="144" height="1.5" fill="url(#scratchH)"/>
+  <rect x="128" y="158" width="144" height="1" fill="url(#scratchH)"/>
+  <rect x="128" y="220" width="144" height="1.5" fill="url(#scratchH)"/>
+  <rect x="128" y="260" width="144" height="1" fill="url(#scratchH)"/>
+
+  <!-- ── HIT ZONE MARKINGS (IPSC scoring zones) ── -->
+  <!-- A-zone circle (center) -->
+  <ellipse cx="200" cy="175" rx="44" ry="52" fill="none" stroke="#D32F3A" stroke-width="2" opacity="0.7"/>
+  <!-- A-zone fill subtle -->
+  <ellipse cx="200" cy="175" rx="44" ry="52" fill="#D32F3A" opacity="0.05"/>
+  <!-- A zone label -->
+  <text x="200" y="80" font-family="Arial Black,Arial,sans-serif" font-size="11" font-weight="900" fill="#D32F3A" text-anchor="middle" opacity="0.6" letter-spacing="1">A</text>
+
+  <!-- C-zone outer box marker -->
+  <rect x="135" y="80" width="130" height="216" rx="2" fill="none" stroke="#A5A5A5" stroke-width="1" opacity="0.15"/>
+
+  <!-- Center hit marker / sweet spot -->
+  <circle cx="200" cy="175" r="10" fill="none" stroke="#D32F3A" stroke-width="2" opacity="0.8"/>
+  <circle cx="200" cy="175" r="5" fill="#D32F3A" opacity="0.5"/>
+  <circle cx="200" cy="175" r="2" fill="#FF4444"/>
+
+  <!-- Crosshair lines -->
+  <line x1="180" y1="175" x2="220" y2="175" stroke="#D32F3A" stroke-width="1" opacity="0.4"/>
+  <line x1="200" y1="155" x2="200" y2="195" stroke="#D32F3A" stroke-width="1" opacity="0.4"/>
+
+  <!-- ── BULLET IMPACT MARKS (used/tested look) ── -->
+  <circle cx="155" cy="140" r="4" fill="#111113"/>
+  <circle cx="155" cy="140" r="2.5" fill="#0A0A0C"/>
+  <circle cx="155" cy="140" r="5" fill="none" stroke="#3A3A3E" stroke-width="1" opacity="0.6"/>
+
+  <circle cx="245" cy="210" r="3.5" fill="#111113"/>
+  <circle cx="245" cy="210" r="2" fill="#0A0A0C"/>
+  <circle cx="245" cy="210" r="4.5" fill="none" stroke="#3A3A3E" stroke-width="1" opacity="0.5"/>
+
+  <circle cx="178" cy="250" r="3" fill="#111113"/>
+  <circle cx="178" cy="250" r="1.8" fill="#0A0A0C"/>
+
+  <circle cx="228" cy="120" r="2.5" fill="#111113"/>
+  <circle cx="228" cy="120" r="1.5" fill="#0A0A0C"/>
+
+  <!-- ── IPSC SPEC STAMP ── -->
+  <rect x="134" y="272" width="66" height="22" rx="2" fill="#111113" opacity="0.7"/>
+  <text x="167" y="280" font-family="Arial,sans-serif" font-size="6.5" fill="#A5A5A5" text-anchor="middle" letter-spacing="0.5">IPSC SPEC</text>
+  <text x="167" y="290" font-family="Arial,sans-serif" font-size="6" fill="#D32F3A" text-anchor="middle" letter-spacing="0.5">AR500 STEEL</text>
+
+  <!-- Thickness / size stamp -->
+  <rect x="204" y="272" width="66" height="22" rx="2" fill="#111113" opacity="0.7"/>
+  <text x="237" y="280" font-family="Arial,sans-serif" font-size="6.5" fill="#A5A5A5" text-anchor="middle">6mm · 5kg</text>
+  <text x="237" y="290" font-family="Arial,sans-serif" font-size="6" fill="#A5A5A5" text-anchor="middle" opacity="0.6">MINI SIZE</text>
+
+  <!-- ── CORNER ACCENTS ── -->
+  <!-- Top-left corner marker (matching site) -->
+  <line x1="126" y1="66" x2="148" y2="66" stroke="#D32F3A" stroke-width="2" opacity="0.8"/>
+  <line x1="126" y1="66" x2="126" y2="88" stroke="#D32F3A" stroke-width="2" opacity="0.8"/>
+  <!-- Bottom-right corner marker -->
+  <line x1="274" y1="304" x2="252" y2="304" stroke="#D32F3A" stroke-width="2" opacity="0.8"/>
+  <line x1="274" y1="304" x2="274" y2="282" stroke="#D32F3A" stroke-width="2" opacity="0.8"/>
+</svg>
