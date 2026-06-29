@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { LanguageProvider } from "@/app/contexts/LanguageContext";
 
 export const metadata: Metadata = {
   title: "R U READY — Action Air Gear",
@@ -28,7 +29,7 @@ export default function RootLayout({
         />
       </head>
       <body className="min-h-full flex flex-col bg-[#0F0F10] text-[#F5F5F5]">
-        {children}
+        <LanguageProvider>{children}</LanguageProvider>
       </body>
     </html>
   );

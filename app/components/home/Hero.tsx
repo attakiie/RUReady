@@ -3,9 +3,41 @@
 import { useEffect, useRef } from "react";
 import Link from "next/link";
 import { ArrowRight, ChevronDown } from "lucide-react";
+import { useLanguage } from "@/app/contexts/LanguageContext";
+
+const copy = {
+  en: {
+    eyebrow: "Action Air · IPSC · Thailand",
+    sub: "Performance gear for Action Air players.\nBuilt by players. Tested on the range.",
+    gearUp: "Gear Up",
+    shopAll: "Shop All",
+    stats: [
+      { value: "100+", label: "Products" },
+      { value: "Class B", label: "Tested By" },
+      { value: "TH", label: "Nationwide Shipping" },
+    ],
+    standBy: "Stand By...",
+    athletePhoto: "Athlete Photo Here",
+  },
+  th: {
+    eyebrow: "Action Air · IPSC · ไทยแลนด์",
+    sub: "อุปกรณ์สำหรับนักยิง Action Air\nออกแบบโดยผู้เล่น ทดสอบในสนามจริง",
+    gearUp: "เลือกซื้อเลย",
+    shopAll: "ดูสินค้าทั้งหมด",
+    stats: [
+      { value: "100+", label: "สินค้า" },
+      { value: "Class B", label: "ทดสอบโดย" },
+      { value: "TH", label: "จัดส่งทั่วประเทศ" },
+    ],
+    standBy: "กำลังมา...",
+    athletePhoto: "รูปนักกีฬา",
+  },
+};
 
 export default function Hero() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const { lang } = useLanguage();
+  const t = copy[lang];
 
   // Animated red motion lines — like laser sight traces
   useEffect(() => {
@@ -107,7 +139,7 @@ export default function Hero() {
             <div className="flex items-center gap-3 mb-6">
               <span className="block w-8 h-px bg-[#D32F3A]" />
               <span className="text-[#D32F3A] text-xs font-semibold tracking-[0.2em] uppercase">
-                Action Air · IPSC · Thailand
+                {t.eyebrow}
               </span>
             </div>
 
@@ -126,9 +158,8 @@ export default function Hero() {
             </h1>
 
             {/* Subheadline */}
-            <p className="text-[#A5A5A5] text-lg leading-relaxed max-w-md mb-10">
-              Performance gear for Action Air players.
-              Built by players. Tested on the range.
+            <p className="text-[#A5A5A5] text-lg leading-relaxed max-w-md mb-10 whitespace-pre-line">
+              {t.sub}
             </p>
 
             {/* CTA Buttons */}
@@ -137,22 +168,22 @@ export default function Hero() {
                 href="/shop"
                 className="group inline-flex items-center gap-2 bg-[#D32F3A] hover:bg-[#A02029] text-[#F5F5F5] font-semibold text-sm px-7 py-3.5 tracking-wide uppercase transition-colors duration-200"
               >
-                Gear Up
+                {t.gearUp}
                 <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform duration-200" />
               </Link>
               <Link
                 href="/shop"
                 className="inline-flex items-center gap-2 border border-[#2B2B2E] hover:border-[#F5F5F5] text-[#A5A5A5] hover:text-[#F5F5F5] font-semibold text-sm px-7 py-3.5 tracking-wide uppercase transition-colors duration-200"
               >
-                Shop All
+                {t.shopAll}
               </Link>
             </div>
 
             {/* Stats */}
             <div className="flex gap-8 mt-12 pt-8 border-t border-[#2B2B2E]">
-              <Stat value="100+" label="Products" />
-              <Stat value="Class B" label="Tested By" />
-              <Stat value="TH" label="Nationwide Shipping" />
+              {t.stats.map((s) => (
+                <Stat key={s.label} value={s.value} label={s.label} />
+              ))}
             </div>
           </div>
 
@@ -173,14 +204,14 @@ export default function Hero() {
                   RUR
                 </div>
                 <span className="text-[#2B2B2E] text-xs tracking-widest uppercase mt-2">
-                  Athlete Photo Here
+                  {t.athletePhoto}
                 </span>
               </div>
 
               {/* Floating tag */}
               <div className="absolute -bottom-4 -left-4 bg-[#D32F3A] px-4 py-2">
                 <span className="text-[#F5F5F5] text-xs font-semibold tracking-widest uppercase">
-                  Stand By...
+                  {t.standBy}
                 </span>
               </div>
             </div>

@@ -3,10 +3,18 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { ShoppingBag, Menu, X } from "lucide-react";
+import { useLanguage } from "@/app/contexts/LanguageContext";
+
+const nav = {
+  en: { shop: "Shop", categories: "Categories", about: "About" },
+  th: { shop: "ร้านค้า", categories: "หมวดหมู่", about: "เกี่ยวกับเรา" },
+};
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const { lang, toggle } = useLanguage();
+  const t = nav[lang];
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
@@ -37,13 +45,22 @@ export default function Navbar() {
 
           {/* Desktop Nav */}
           <div className="hidden md:flex items-center gap-8">
-            <NavLink href="/shop">Shop</NavLink>
-            <NavLink href="/categories">Categories</NavLink>
-            <NavLink href="/about">About</NavLink>
+            <NavLink href="/shop">{t.shop}</NavLink>
+            <NavLink href="/categories">{t.categories}</NavLink>
+            <NavLink href="/about">{t.about}</NavLink>
           </div>
 
           {/* Right Actions */}
           <div className="flex items-center gap-4">
+            {/* Language Toggle */}
+            <button
+              onClick={toggle}
+              aria-label="Toggle language"
+              className="text-xs font-semibold tracking-widest text-[#A5A5A5] hover:text-[#F5F5F5] transition-colors duration-200 uppercase border border-[#2B2B2E] hover:border-[#F5F5F5] px-2 py-1"
+            >
+              {lang === "en" ? "TH" : "EN"}
+            </button>
+
             <button
               aria-label="Cart"
               className="relative p-2 text-[#A5A5A5] hover:text-[#F5F5F5] transition-colors duration-200"
@@ -69,9 +86,9 @@ export default function Navbar() {
       {menuOpen && (
         <div className="md:hidden bg-[#1A1A1C] border-t border-[#2B2B2E]">
           <div className="px-4 py-4 flex flex-col gap-4">
-            <MobileNavLink href="/shop" onClick={() => setMenuOpen(false)}>Shop</MobileNavLink>
-            <MobileNavLink href="/categories" onClick={() => setMenuOpen(false)}>Categories</MobileNavLink>
-            <MobileNavLink href="/about" onClick={() => setMenuOpen(false)}>About</MobileNavLink>
+            <MobileNavLink href="/shop" onClick={() => setMenuOpen(false)}>{t.shop}</MobileNavLink>
+            <MobileNavLink href="/categories" onClick={() => setMenuOpen(false)}>{t.categories}</MobileNavLink>
+            <MobileNavLink href="/about" onClick={() => setMenuOpen(false)}>{t.about}</MobileNavLink>
           </div>
         </div>
       )}
