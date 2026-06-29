@@ -11,7 +11,7 @@ const copy = {
     allProducts: "All Products",
     items: "items",
     categories: [
-      { id: "green-gas", label: "Green Gas", desc: "High-pressure propellant for GBB pistols" },
+      { id: "green-gas", label: "Gas", desc: "High-pressure propellant for GBB pistols" },
       { id: "targets", label: "Targets", desc: "IPSC-spec steel and popper targets" },
       { id: "accessories", label: "Accessories", desc: "Holsters, mag pouches, range gear" },
       { id: "3d-print", label: "3D Print", desc: "Custom printed parts & accessories" },
@@ -23,7 +23,7 @@ const copy = {
     allProducts: "ดูทั้งหมด",
     items: "ชิ้น",
     categories: [
-      { id: "green-gas", label: "Green Gas", desc: "แก๊สแรงดันสูงสำหรับปืน GBB" },
+      { id: "green-gas", label: "Gas", desc: "แก๊สแรงดันสูงสำหรับปืน GBB" },
       { id: "targets", label: "เป้ายิง", desc: "เป้าเหล็กมาตรฐาน IPSC" },
       { id: "accessories", label: "อุปกรณ์เสริม", desc: "ซองปืน, ซองแม็ก, อุปกรณ์ประกอบ" },
       { id: "3d-print", label: "3D Print", desc: "ชิ้นส่วนพิมพ์ 3 มิติ" },

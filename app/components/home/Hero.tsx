@@ -12,8 +12,6 @@ const copy = {
     gearUp: "Gear Up",
     shopAll: "Shop All",
     stats: [
-      { value: "100+", label: "Products" },
-      { value: "Class B", label: "Tested By" },
       { value: "TH", label: "Nationwide Shipping" },
     ],
     standBy: "Stand By...",
@@ -25,8 +23,6 @@ const copy = {
     gearUp: "เลือกซื้อเลย",
     shopAll: "ดูสินค้าทั้งหมด",
     stats: [
-      { value: "100+", label: "สินค้า" },
-      { value: "Class B", label: "ทดสอบโดย" },
       { value: "TH", label: "จัดส่งทั่วประเทศ" },
     ],
     standBy: "กำลังมา...",
