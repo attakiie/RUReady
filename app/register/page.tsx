@@ -51,30 +51,22 @@ export default function RegisterPage() {
     setLoading(true);
     const supabase = createClient();
 
-    const { data, error: signUpError } = await supabase.auth.signUp({
+    const { error: signUpError } = await supabase.auth.signUp({
       email: form.email,
       password: form.password,
+      options: {
+        data: {
+          first_name: form.firstName.trim(),
+          last_name: form.lastName.trim(),
+          phone: form.phone.trim(),
+        },
+      },
     });
 
     if (signUpError) {
       setError(signUpError.message);
       setLoading(false);
       return;
-    }
-
-    if (data.user) {
-      const { error: profileError } = await supabase.from("profiles").insert({
-        id: data.user.id,
-        first_name: form.firstName.trim(),
-        last_name: form.lastName.trim(),
-        phone: form.phone.trim(),
-      });
-
-      if (profileError) {
-        setError("สร้างบัญชีสำเร็จ แต่บันทึกข้อมูลไม่สำเร็จ: " + profileError.message);
-        setLoading(false);
-        return;
-      }
     }
 
     setLoading(false);
