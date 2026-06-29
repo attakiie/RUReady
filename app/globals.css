@@ -1,0 +1,55 @@
+@import "tailwindcss";
+
+@theme inline {
+  /* Brand Colors */
+  --color-brand-red: #D32F3A;
+  --color-brand-red-dim: #A02029;
+  --color-bg: #0F0F10;
+  --color-surface: #1A1A1C;
+  --color-border: #2B2B2E;
+  --color-text: #F5F5F5;
+  --color-secondary: #A5A5A5;
+
+  /* Fonts */
+  --font-display: 'Bebas Neue', sans-serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+}
+
+:root {
+  --background: #0F0F10;
+  --foreground: #F5F5F5;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: 'Inter', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Bebas Neue for headlines */
+.font-display {
+  font-family: 'Bebas Neue', sans-serif;
+  letter-spacing: 0.02em;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: #0F0F10; }
+::-webkit-scrollbar-thumb { background: #2B2B2E; border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: #D32F3A; }
+
+/* Selection */
+::selection {
+  background: #D32F3A;
+  color: #F5F5F5;
+}
