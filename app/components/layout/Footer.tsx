@@ -61,7 +61,7 @@ export default function Footer() {
   const t = copy[lang];
 
   return (
-    <footer className="bg-[#1A1A1C] border-t border-[#2B2B2E]">
+    <footer className="bg-[#1A1A1C] border-t-2 border-[#D32F3A]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-10">
           {/* Brand */}

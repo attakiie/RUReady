@@ -22,7 +22,7 @@ export default function CTABanner() {
   const t = copy[lang];
 
   return (
-    <section className="py-24 bg-[#D32F3A] relative overflow-hidden">
+    <section className="py-24 bg-[#D32F3A] relative overflow-hidden border-t-4 border-[#A02029]">
       {/* Subtle texture overlay */}
       <div
         className="absolute inset-0 pointer-events-none opacity-[0.05]"

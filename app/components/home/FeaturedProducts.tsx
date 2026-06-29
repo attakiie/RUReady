@@ -34,7 +34,7 @@ export default function FeaturedProducts() {
   const t = copy[lang];
 
   return (
-    <section className="py-24 bg-[#1A1A1C]">
+    <section className="py-24 bg-[#1A1A1C] border-t-2 border-[#D32F3A]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="flex items-end justify-between mb-12">
@@ -48,6 +48,7 @@ export default function FeaturedProducts() {
             >
               {t.heading}
             </h2>
+            <div className="w-16 h-[3px] bg-[#D32F3A] mt-4" />
           </div>
           <Link
             href="/shop"

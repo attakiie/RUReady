@@ -29,7 +29,11 @@ export default function RootLayout({
         />
       </head>
       <body className="min-h-full flex flex-col bg-[#0F0F10] text-[#F5F5F5]">
-        <LanguageProvider>{children}</LanguageProvider>
+        {/* Global red top stripe */}
+        <div className="fixed top-0 left-0 right-0 h-[3px] bg-[#D32F3A] z-[100]" />
+        <div className="pt-[3px]">
+          <LanguageProvider>{children}</LanguageProvider>
+        </div>
       </body>
     </html>
   );

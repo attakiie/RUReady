@@ -180,7 +180,7 @@ export default function Hero() {
             </div>
 
             {/* Stats */}
-            <div className="flex gap-8 mt-12 pt-8 border-t border-[#2B2B2E]">
+            <div className="flex gap-8 mt-12 pt-8 border-t-2 border-[#D32F3A]/30">
               {t.stats.map((s) => (
                 <Stat key={s.label} value={s.value} label={s.label} />
               ))}
