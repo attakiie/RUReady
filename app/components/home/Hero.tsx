@@ -191,20 +191,13 @@ export default function Hero() {
               <div className="absolute top-0 left-0 w-12 h-12 border-t-2 border-l-2 border-[#D32F3A]" />
               <div className="absolute bottom-0 right-0 w-12 h-12 border-b-2 border-r-2 border-[#D32F3A]" />
 
-              {/* Shooter illustration */}
+              {/* Product image */}
               <div className="absolute inset-0 bg-[#1A1A1C] overflow-hidden">
                 <img
-                  src="/images/hero-shooter.svg"
-                  alt="Action Air shooter"
-                  className="w-full h-full object-cover"
+                  src="/images/hero-gas-products.png"
+                  alt="Green Gas — TOPGAS & ET-1000"
+                  className="w-full h-full object-cover object-center"
                 />
-              </div>
-
-              {/* Floating tag */}
-              <div className="absolute -bottom-4 -left-4 bg-[#D32F3A] px-4 py-2">
-                <span className="text-[#F5F5F5] text-xs font-semibold tracking-widest uppercase">
-                  {t.standBy}
-                </span>
               </div>
             </div>
           </div>
