@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useMemo } from "react";
+import { Suspense, useEffect, useState, useMemo } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { Search, SlidersHorizontal, ArrowRight, X } from "lucide-react";
@@ -64,7 +64,8 @@ const copy = {
   },
 };
 
-export default function ShopPage() {
+// Inner component that uses useSearchParams — must be inside <Suspense>
+function ShopContent() {
   const { lang } = useLanguage();
   const t = copy[lang];
   const searchParams = useSearchParams();
@@ -73,7 +74,6 @@ export default function ShopPage() {
   const [products, setProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
-
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState("default");
   const activeCategory = searchParams.get("cat") ?? "all";
@@ -94,13 +94,9 @@ export default function ShopPage() {
 
   const filtered = useMemo(() => {
     let list = [...products];
-
-    // Category filter
     if (activeCategory !== "all") {
       list = list.filter((p) => p.category_id === activeCategory);
     }
-
-    // Search
     if (search.trim()) {
       const q = search.toLowerCase();
       list = list.filter(
@@ -109,11 +105,8 @@ export default function ShopPage() {
           p.name_th.toLowerCase().includes(q)
       );
     }
-
-    // Sort
     if (sort === "price_asc") list.sort((a, b) => a.price - b.price);
     if (sort === "price_desc") list.sort((a, b) => b.price - a.price);
-
     return list;
   }, [products, activeCategory, search, sort]);
 
@@ -125,9 +118,94 @@ export default function ShopPage() {
   }
 
   return (
+    <>
+      {/* Filters row */}
+      <div className="flex flex-col sm:flex-row gap-3 mb-8">
+        <div className="relative flex-1">
+          <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#3A3A3E]" />
+          <input
+            type="text"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder={t.search}
+            className="w-full bg-[#1A1A1C] border border-[#2B2B2E] focus:border-[#D32F3A] text-[#F5F5F5] placeholder-[#3A3A3E] text-sm pl-9 pr-4 py-3 outline-none transition-colors"
+          />
+          {search && (
+            <button
+              onClick={() => setSearch("")}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-[#555] hover:text-[#F5F5F5]"
+            >
+              <X size={14} />
+            </button>
+          )}
+        </div>
+        <div className="relative">
+          <SlidersHorizontal size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#3A3A3E] pointer-events-none" />
+          <select
+            value={sort}
+            onChange={(e) => setSort(e.target.value)}
+            className="appearance-none bg-[#1A1A1C] border border-[#2B2B2E] focus:border-[#D32F3A] text-[#A5A5A5] text-sm pl-9 pr-10 py-3 outline-none transition-colors cursor-pointer min-w-[180px]"
+          >
+            {t.sortOptions.map((o) => (
+              <option key={o.value} value={o.value}>{o.label}</option>
+            ))}
+          </select>
+        </div>
+      </div>
+
+      {/* Category chips */}
+      <div className="flex flex-wrap gap-2 mb-8">
+        <CategoryChip active={activeCategory === "all"} onClick={() => setCategory("all")}>
+          {t.all}
+        </CategoryChip>
+        {categories.map((cat) => (
+          <CategoryChip
+            key={cat.id}
+            active={activeCategory === cat.id}
+            onClick={() => setCategory(cat.id)}
+          >
+            {lang === "en" ? cat.name_en : cat.name_th}
+          </CategoryChip>
+        ))}
+      </div>
+
+      {/* Result count */}
+      {!loading && (
+        <p className="text-[#555] text-xs tracking-widest uppercase mb-6">
+          {filtered.length} {t.results}
+        </p>
+      )}
+
+      {/* Grid */}
+      {loading ? (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-[#2B2B2E]">
+          {[1, 2, 3].map((i) => (
+            <div key={i} className="bg-[#1A1A1C] aspect-square animate-pulse" />
+          ))}
+        </div>
+      ) : filtered.length === 0 ? (
+        <div className="text-center py-32">
+          <p className="text-[#F5F5F5] text-2xl font-semibold mb-2">{t.noResults}</p>
+          <p className="text-[#555] text-sm">{t.noResultsSub}</p>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-[#2B2B2E]">
+          {filtered.map((product) => (
+            <ProductCard key={product.id} product={product} t={t} lang={lang} />
+          ))}
+        </div>
+      )}
+    </>
+  );
+}
+
+export default function ShopPage() {
+  const { lang } = useLanguage();
+  const t = copy[lang];
+
+  return (
     <div className="min-h-screen bg-[#0F0F10] pt-24 pb-24">
       <div className="fixed top-0 left-0 right-0 h-[3px] bg-[#D32F3A] z-50" />
-
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Page header */}
         <div className="mb-10 border-b border-[#2B2B2E] pb-8">
@@ -142,105 +220,23 @@ export default function ShopPage() {
           </h1>
         </div>
 
-        {/* Filters row */}
-        <div className="flex flex-col sm:flex-row gap-3 mb-8">
-          {/* Search */}
-          <div className="relative flex-1">
-            <Search
-              size={14}
-              className="absolute left-3 top-1/2 -translate-y-1/2 text-[#3A3A3E]"
-            />
-            <input
-              type="text"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              placeholder={t.search}
-              className="w-full bg-[#1A1A1C] border border-[#2B2B2E] focus:border-[#D32F3A] text-[#F5F5F5] placeholder-[#3A3A3E] text-sm pl-9 pr-4 py-3 outline-none transition-colors"
-            />
-            {search && (
-              <button
-                onClick={() => setSearch("")}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-[#555] hover:text-[#F5F5F5]"
-              >
-                <X size={14} />
-              </button>
-            )}
-          </div>
-
-          {/* Sort */}
-          <div className="relative">
-            <SlidersHorizontal
-              size={14}
-              className="absolute left-3 top-1/2 -translate-y-1/2 text-[#3A3A3E] pointer-events-none"
-            />
-            <select
-              value={sort}
-              onChange={(e) => setSort(e.target.value)}
-              className="appearance-none bg-[#1A1A1C] border border-[#2B2B2E] focus:border-[#D32F3A] text-[#A5A5A5] text-sm pl-9 pr-10 py-3 outline-none transition-colors cursor-pointer min-w-[180px]"
-            >
-              {t.sortOptions.map((o) => (
-                <option key={o.value} value={o.value}>
-                  {o.label}
-                </option>
-              ))}
-            </select>
-          </div>
-        </div>
-
-        {/* Category chips */}
-        <div className="flex flex-wrap gap-2 mb-8">
-          <CategoryChip
-            active={activeCategory === "all"}
-            onClick={() => setCategory("all")}
-          >
-            {t.all}
-          </CategoryChip>
-          {categories.map((cat) => (
-            <CategoryChip
-              key={cat.id}
-              active={activeCategory === cat.id}
-              onClick={() => setCategory(cat.id)}
-            >
-              {lang === "en" ? cat.name_en : cat.name_th}
-            </CategoryChip>
-          ))}
-        </div>
-
-        {/* Result count */}
-        {!loading && (
-          <p className="text-[#555] text-xs tracking-widest uppercase mb-6">
-            {filtered.length} {t.results}
-          </p>
-        )}
-
-        {/* Grid */}
-        {loading ? (
+        {/* Wrap useSearchParams content in Suspense */}
+        <Suspense fallback={
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-[#2B2B2E]">
             {[1, 2, 3].map((i) => (
               <div key={i} className="bg-[#1A1A1C] aspect-square animate-pulse" />
             ))}
           </div>
-        ) : filtered.length === 0 ? (
-          <div className="text-center py-32">
-            <p className="text-[#F5F5F5] text-2xl font-semibold mb-2">{t.noResults}</p>
-            <p className="text-[#555] text-sm">{t.noResultsSub}</p>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-[#2B2B2E]">
-            {filtered.map((product) => (
-              <ProductCard key={product.id} product={product} t={t} lang={lang} />
-            ))}
-          </div>
-        )}
+        }>
+          <ShopContent />
+        </Suspense>
       </div>
     </div>
   );
 }
 
 function CategoryChip({
-  active,
-  onClick,
-  children,
+  active, onClick, children,
 }: {
   active: boolean;
   onClick: () => void;
@@ -261,9 +257,7 @@ function CategoryChip({
 }
 
 function ProductCard({
-  product,
-  t,
-  lang,
+  product, t, lang,
 }: {
   product: Product;
   t: typeof copy.en;
@@ -309,17 +303,12 @@ function ProductCard({
               ฿{product.price.toLocaleString()}
             </span>
             {inStock ? (
-              <span className="text-[10px] text-[#4ade80] tracking-widest uppercase">
-                {t.inStock}
-              </span>
+              <span className="text-[10px] text-[#4ade80] tracking-widest uppercase">{t.inStock}</span>
             ) : (
-              <span className="text-[10px] text-[#A5A5A5] tracking-widest uppercase">
-                {t.outOfStock}
-              </span>
+              <span className="text-[10px] text-[#A5A5A5] tracking-widest uppercase">{t.outOfStock}</span>
             )}
           </div>
         </div>
-
         <Link
           href={`/products/${product.slug}`}
           className="mt-auto w-full flex items-center justify-center gap-2 bg-[#0F0F10] hover:bg-[#D32F3A] border border-[#2B2B2E] hover:border-[#D32F3A] text-[#A5A5A5] hover:text-[#F5F5F5] text-xs font-semibold tracking-widest uppercase py-3 transition-all duration-200"
