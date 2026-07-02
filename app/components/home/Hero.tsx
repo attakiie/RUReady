@@ -183,22 +183,20 @@ export default function Hero() {
             </div>
           </div>
 
-          {/* Right — Visual placeholder (athlete image area) */}
+          {/* Right — Product image */}
           <div className="hidden lg:flex items-center justify-center relative">
-            <div className="relative w-full aspect-[3/4] max-w-md">
-              {/* Frame */}
-              <div className="absolute inset-0 border border-[#2B2B2E]" />
-              <div className="absolute top-0 left-0 w-12 h-12 border-t-2 border-l-2 border-[#D32F3A]" />
-              <div className="absolute bottom-0 right-0 w-12 h-12 border-b-2 border-r-2 border-[#D32F3A]" />
+            <div className="relative w-full max-w-md">
+              {/* Frame corners */}
+              <div className="absolute inset-0 border border-[#2B2B2E] pointer-events-none z-10" />
+              <div className="absolute top-0 left-0 w-12 h-12 border-t-2 border-l-2 border-[#D32F3A] z-10" />
+              <div className="absolute bottom-0 right-0 w-12 h-12 border-b-2 border-r-2 border-[#D32F3A] z-10" />
 
-              {/* Product image */}
-              <div className="absolute inset-0 bg-[#1A1A1C] overflow-hidden">
-                <img
-                  src="/images/hero-gas-products.png"
-                  alt="Green Gas — TOPGAS & ET-1000"
-                  className="w-full h-full object-contain object-center"
-                />
-              </div>
+              {/* Product image — natural height */}
+              <img
+                src="/images/hero-gas-products.png"
+                alt="Green Gas — TOPGAS & ET-1000"
+                className="w-full h-auto block"
+              />
             </div>
           </div>
         </div>
