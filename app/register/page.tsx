@@ -43,8 +43,8 @@ export default function RegisterPage() {
       setError("รหัสผ่านไม่ตรงกัน");
       return;
     }
-    if (form.password.length < 6) {
-      setError("รหัสผ่านต้องมีอย่างน้อย 6 ตัวอักษร");
+    if (form.password.length < 8) {
+      setError("รหัสผ่านต้องมีอย่างน้อย 8 ตัวอักษร");
       return;
     }
 
@@ -192,7 +192,7 @@ export default function RegisterPage() {
                 type={showPw ? "text" : "password"}
                 value={form.password}
                 onChange={set("password")}
-                placeholder="อย่างน้อย 6 ตัวอักษร"
+                placeholder="อย่างน้อย 8 ตัวอักษร"
                 required
                 className={inputCls + " pr-11"}
               />

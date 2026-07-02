@@ -55,7 +55,7 @@ INSERT INTO public.products (slug, name_en, name_th, desc_en, desc_th, price, st
     'Premium high-pressure green gas for GBB pistols and rifles. Consistent pressure for reliable cycling every time.',
     'กรีนแก๊สแรงดันสูงคุณภาพพรีเมียม เหมาะสำหรับปืน GBB ทุกรุ่น แรงดันสม่ำเสมอ ใช้งานได้ต่อเนื่อง',
     230, 50, 'gas',
-    '{"/images/prod-et1000.svg"}',
+    '{"/images/prod-et1000-1.jpg"}',
     'Best Seller'
   ),
   (
@@ -65,7 +65,7 @@ INSERT INTO public.products (slug, name_en, name_th, desc_en, desc_th, price, st
     'Large 12kg industrial gas cylinder for refilling GBB magazines. Best value per fill for regular range sessions.',
     'ถังแก๊สขนาดใหญ่ 12กก. สำหรับเติมแม็กปืน GBB ประหยัดกว่ากระป๋องทั่วไป เหมาะสำหรับนักยิงประจำ',
     260, 20, 'gas',
-    '{"/images/prod-topgas.svg"}',
+    '{"/images/prod-topgas-1.jpg"}',
     'New'
   ),
   (
