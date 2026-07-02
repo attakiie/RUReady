@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ShoppingBag, Menu, X, User, LogOut, ChevronDown } from "lucide-react";
 import { useLanguage } from "@/app/contexts/LanguageContext";
+import { useCart } from "@/app/contexts/CartContext";
 import { createClient } from "@/app/lib/supabase";
 import type { User as SupabaseUser } from "@supabase/supabase-js";
 
@@ -22,6 +23,7 @@ export default function Navbar() {
   const { lang, toggle } = useLanguage();
   const t = nav[lang];
   const router = useRouter();
+  const { count, setDrawerOpen } = useCart();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
@@ -165,10 +167,17 @@ export default function Navbar() {
 
             <button
               aria-label="Cart"
+              onClick={() => setDrawerOpen(true)}
               className="relative p-2 text-[#A5A5A5] hover:text-[#F5F5F5] transition-colors duration-200"
             >
               <ShoppingBag size={20} />
-              <span className="absolute top-1 right-1 w-1.5 h-1.5 bg-[#D32F3A] rounded-full" />
+              {count > 0 ? (
+                <span className="absolute -top-0.5 -right-0.5 min-w-[18px] h-[18px] bg-[#D32F3A] rounded-full text-[#F5F5F5] text-[10px] font-bold flex items-center justify-center px-1">
+                  {count > 99 ? "99+" : count}
+                </span>
+              ) : (
+                <span className="absolute top-1 right-1 w-1.5 h-1.5 bg-[#D32F3A] rounded-full" />
+              )}
             </button>
 
             {/* Mobile Menu Toggle */}

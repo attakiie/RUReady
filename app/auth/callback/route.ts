@@ -30,11 +30,11 @@ export async function GET(request: NextRequest) {
     const { error } = await supabase.auth.exchangeCodeForSession(code);
 
     if (!error) {
-      // Password recovery → redirect to account page so user can set new password
+      // Password recovery → redirect to dedicated reset-password page
       if (type === "recovery") {
-        return NextResponse.redirect(`${origin}/account`);
+        return NextResponse.redirect(`${origin}/reset-password`);
       }
-      // Email confirmation → redirect to home (or account)
+      // Email confirmation → go to account
       return NextResponse.redirect(`${origin}/account`);
     }
   }

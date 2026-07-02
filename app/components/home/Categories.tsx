@@ -1,8 +1,10 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Wind, Target, Layers, Printer } from "lucide-react";
 import { useLanguage } from "@/app/contexts/LanguageContext";
+import { createClient } from "@/app/lib/supabase";
 
 const copy = {
   en: {
@@ -11,7 +13,7 @@ const copy = {
     allProducts: "All Products",
     items: "items",
     categories: [
-      { id: "green-gas", label: "Gas", desc: "High-pressure propellant for GBB pistols" },
+      { id: "gas", label: "Gas", desc: "High-pressure propellant for GBB pistols" },
       { id: "targets", label: "Targets", desc: "IPSC-spec steel and popper targets" },
       { id: "accessories", label: "Accessories", desc: "Holsters, mag pouches, range gear" },
       { id: "3d-print", label: "3D Print", desc: "Custom printed parts & accessories" },
@@ -23,7 +25,7 @@ const copy = {
     allProducts: "ดูทั้งหมด",
     items: "ชิ้น",
     categories: [
-      { id: "green-gas", label: "Gas", desc: "แก๊สแรงดันสูงสำหรับปืน GBB" },
+      { id: "gas", label: "Gas", desc: "แก๊สแรงดันสูงสำหรับปืน GBB" },
       { id: "targets", label: "เป้ายิง", desc: "เป้าเหล็กมาตรฐาน IPSC" },
       { id: "accessories", label: "อุปกรณ์เสริม", desc: "ซองปืน, ซองแม็ก, อุปกรณ์ประกอบ" },
       { id: "3d-print", label: "3D Print", desc: "ชิ้นส่วนพิมพ์ 3 มิติ" },
@@ -32,17 +34,26 @@ const copy = {
 };
 
 const icons = [Wind, Target, Layers, Printer];
-const counts = [3, 5, 12, 8];
-const hrefs = [
-  "/shop?cat=green-gas",
-  "/shop?cat=targets",
-  "/shop?cat=accessories",
-  "/shop?cat=3d-print",
-];
 
 export default function Categories() {
   const { lang } = useLanguage();
   const t = copy[lang];
+  const [counts, setCounts] = useState<Record<string, number>>({});
+
+  useEffect(() => {
+    const supabase = createClient();
+    supabase
+      .from("products")
+      .select("category_id")
+      .eq("is_active", true)
+      .then(({ data }) => {
+        const map: Record<string, number> = {};
+        (data ?? []).forEach((p: { category_id: string }) => {
+          map[p.category_id] = (map[p.category_id] ?? 0) + 1;
+        });
+        setCounts(map);
+      });
+  }, []);
 
   return (
     <section className="py-24 bg-[#0F0F10] border-t-2 border-[#D32F3A]">
@@ -73,10 +84,11 @@ export default function Categories() {
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
           {t.categories.map((cat, i) => {
             const Icon = icons[i];
+            const count = counts[cat.id] ?? 0;
             return (
               <Link
                 key={cat.id}
-                href={hrefs[i]}
+                href={`/shop?cat=${cat.id}`}
                 className="group relative flex flex-col p-6 bg-[#1A1A1C] border border-[#2B2B2E] hover:border-[#D32F3A] transition-all duration-200 overflow-hidden"
               >
                 {/* Red glow on hover */}
@@ -102,7 +114,7 @@ export default function Categories() {
                     {cat.desc}
                   </p>
                   <span className="text-[#2B2B2E] text-xs tracking-widest uppercase">
-                    {counts[i]} {t.items}
+                    {count > 0 ? `${count} ${t.items}` : "—"}
                   </span>
                 </div>
               </Link>

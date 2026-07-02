@@ -169,6 +169,12 @@ function ShopContent() {
         ))}
       </div>
 
+      {/* Shipping banner */}
+      <div className="flex items-center gap-3 bg-[#1A1A1C] border border-[#2B2B2E] px-4 py-3 mb-6 text-xs text-[#A5A5A5]">
+        <span className="text-base">🚚</span>
+        <span>{lang === "th" ? "จัดส่งทั่วประเทศ · ขวดแรก ฿50 · ขวดต่อไป ฿30" : "Nationwide shipping · First bottle ฿50 · Additional ฿30 each"}</span>
+      </div>
+
       {/* Result count */}
       {!loading && (
         <p className="text-[#555] text-xs tracking-widest uppercase mb-6">

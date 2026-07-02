@@ -8,7 +8,7 @@ const copy = {
     tagline: "Performance gear for Action Air players. Friendly. Fast. Built for the range.",
     links: {
       Shop: [
-        { label: "Green Gas", href: "/shop?cat=green-gas" },
+        { label: "Green Gas", href: "/shop?cat=gas" },
         { label: "Targets", href: "/shop?cat=targets" },
         { label: "Accessories", href: "/shop?cat=accessories" },
         { label: "3D Print", href: "/shop?cat=3d-print" },
@@ -30,7 +30,7 @@ const copy = {
     tagline: "อุปกรณ์สำหรับนักยิง Action Air เป็นมิตร รวดเร็ว พร้อมสำหรับสนาม",
     links: {
       ร้านค้า: [
-        { label: "Green Gas", href: "/shop?cat=green-gas" },
+        { label: "Green Gas", href: "/shop?cat=gas" },
         { label: "เป้ายิง", href: "/shop?cat=targets" },
         { label: "อุปกรณ์เสริม", href: "/shop?cat=accessories" },
         { label: "3D Print", href: "/shop?cat=3d-print" },
@@ -51,9 +51,8 @@ const copy = {
 };
 
 const socials = [
-  { label: "Facebook", href: "https://facebook.com" },
-  { label: "Instagram", href: "https://instagram.com" },
-  { label: "LINE", href: "https://line.me" },
+  { label: "Facebook", href: "https://facebook.com/rureadythailand" },
+  { label: "LINE", href: "https://line.me/R/ti/p/@ruready" },
 ];
 
 export default function Footer() {
@@ -121,7 +120,7 @@ export default function Footer() {
               {t.newsletter}
             </p>
             <a
-              href="https://line.me"
+              href="https://line.me/R/ti/p/@ruready"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 border border-[#2B2B2E] hover:border-[#D32F3A] text-[#A5A5A5] hover:text-[#D32F3A] text-xs font-semibold px-4 py-2.5 tracking-widest uppercase transition-colors duration-200"

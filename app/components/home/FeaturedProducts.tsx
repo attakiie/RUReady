@@ -1,14 +1,22 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { useLanguage } from "@/app/contexts/LanguageContext";
+import { useCart } from "@/app/contexts/CartContext";
+import { createClient } from "@/app/lib/supabase";
 
-const products = [
-  { id: "et-1000", name: "ET-1000 Green Gas", price: 230, tag: "Best Seller", available: true, slug: "et-1000-green-gas", img: "/images/prod-et1000.svg" },
-  { id: "topgas-12kg", name: "Top Gas 12kg", price: 260, tag: "New", available: true, slug: "top-gas-12kg", img: "/images/prod-topgas.svg" },
-  { id: "mini-popper", name: "Mini Popper", price: 180, tag: "IPSC", available: true, slug: "mini-popper", img: "/images/prod-popper.svg" },
-];
+type Product = {
+  id: string;
+  slug: string;
+  name_en: string;
+  name_th: string;
+  price: number;
+  stock: number;
+  images: string[];
+  tag: string;
+};
 
 const copy = {
   en: {
@@ -18,6 +26,7 @@ const copy = {
     inStock: "In Stock",
     outOfStock: "Out of Stock",
     addToCart: "Gear Up",
+    added: "Added!",
   },
   th: {
     eyebrow: "ล่าสุด",
@@ -26,12 +35,43 @@ const copy = {
     inStock: "มีสินค้า",
     outOfStock: "สินค้าหมด",
     addToCart: "หยิบใส่ตะกร้า",
+    added: "เพิ่มแล้ว!",
   },
 };
 
 export default function FeaturedProducts() {
   const { lang } = useLanguage();
   const t = copy[lang];
+  const { addItem } = useCart();
+  const [products, setProducts] = useState<Product[]>([]);
+  const [addedId, setAddedId] = useState<string | null>(null);
+
+  useEffect(() => {
+    const supabase = createClient();
+    supabase
+      .from("products")
+      .select("id, slug, name_en, name_th, price, stock, images, tag")
+      .eq("is_active", true)
+      .order("created_at", { ascending: false })
+      .limit(3)
+      .then(({ data }) => setProducts(data ?? []));
+  }, []);
+
+  function handleAdd(product: Product) {
+    addItem(
+      {
+        id: product.id,
+        slug: product.slug,
+        name_en: product.name_en,
+        name_th: product.name_th,
+        price: product.price,
+        img: product.images?.[0] ?? "",
+      },
+      1
+    );
+    setAddedId(product.id);
+    setTimeout(() => setAddedId(null), 1800);
+  }
 
   return (
     <section className="py-24 bg-[#1A1A1C] border-t-2 border-[#D32F3A]">
@@ -60,73 +100,85 @@ export default function FeaturedProducts() {
         </div>
 
         {/* Products Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-px bg-[#2B2B2E]">
-          {products.map((product) => (
-            <ProductCard key={product.id} product={product} t={t} />
-          ))}
-        </div>
+        {products.length === 0 ? (
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-px bg-[#2B2B2E]">
+            {[1, 2, 3].map((i) => (
+              <div key={i} className="bg-[#1A1A1C] aspect-square animate-pulse" />
+            ))}
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-px bg-[#2B2B2E]">
+            {products.map((product) => {
+              const name = lang === "en" ? product.name_en : product.name_th;
+              const img = product.images?.[0] ?? null;
+              const inStock = product.stock > 0;
+              const wasAdded = addedId === product.id;
+
+              return (
+                <div key={product.id} className="group bg-[#1A1A1C] flex flex-col">
+                  {/* Image */}
+                  <Link href={`/products/${product.slug}`} className="block relative overflow-hidden">
+                    <div className="aspect-square bg-[#0F0F10] flex items-center justify-center relative">
+                      {product.tag && (
+                        <span className="absolute top-3 left-3 bg-[#D32F3A] text-[#F5F5F5] text-[10px] font-semibold px-2 py-1 tracking-widest uppercase z-10">
+                          {product.tag}
+                        </span>
+                      )}
+                      {img ? (
+                        <img
+                          src={img}
+                          alt={name}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                        />
+                      ) : (
+                        <div className="w-20 h-20 border border-[#2B2B2E] flex items-center justify-center text-[#2B2B2E] text-4xl font-bold">
+                          {name.charAt(0)}
+                        </div>
+                      )}
+                      <div className="absolute inset-0 bg-[#D32F3A] opacity-0 group-hover:opacity-[0.06] transition-opacity duration-200" />
+                    </div>
+                  </Link>
+
+                  {/* Info */}
+                  <div className="p-5 flex flex-col gap-4 flex-1">
+                    <div>
+                      <Link href={`/products/${product.slug}`}>
+                        <h3 className="text-[#F5F5F5] font-semibold text-sm tracking-wide leading-tight mb-1 hover:text-[#D32F3A] transition-colors">
+                          {name}
+                        </h3>
+                      </Link>
+                      <div className="flex items-center gap-2">
+                        <span className="text-[#F5F5F5] text-xl font-bold">
+                          ฿{product.price.toLocaleString()}
+                        </span>
+                        {inStock ? (
+                          <span className="text-[10px] text-[#4ade80] tracking-widest uppercase">{t.inStock}</span>
+                        ) : (
+                          <span className="text-[10px] text-[#A5A5A5] tracking-widest uppercase">{t.outOfStock}</span>
+                        )}
+                      </div>
+                    </div>
+
+                    <button
+                      onClick={() => inStock && handleAdd(product)}
+                      disabled={!inStock}
+                      className={`mt-auto w-full text-xs font-semibold tracking-widest uppercase py-3 transition-all duration-200 border ${
+                        wasAdded
+                          ? "bg-[#1a2e1a] border-[#2e5a2e] text-[#4ade80]"
+                          : inStock
+                          ? "bg-[#0F0F10] hover:bg-[#D32F3A] border-[#2B2B2E] hover:border-[#D32F3A] text-[#A5A5A5] hover:text-[#F5F5F5]"
+                          : "bg-[#0F0F10] border-[#2B2B2E] text-[#3A3A3E] cursor-not-allowed"
+                      }`}
+                    >
+                      {wasAdded ? t.added : inStock ? t.addToCart : t.outOfStock}
+                    </button>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        )}
       </div>
     </section>
-  );
-}
-
-type Product = {
-  id: string;
-  name: string;
-  price: number;
-  tag: string;
-  available: boolean;
-  slug: string;
-  img: string;
-};
-
-type Copy = typeof copy.en;
-
-function ProductCard({ product, t }: { product: Product; t: Copy }) {
-  return (
-    <div className="group bg-[#1A1A1C] flex flex-col">
-      {/* Image area */}
-      <Link href={`/products/${product.slug}`} className="block relative overflow-hidden">
-        <div className="aspect-square bg-[#0F0F10] flex items-center justify-center relative">
-          {/* Product tag */}
-          <span className="absolute top-3 left-3 bg-[#D32F3A] text-[#F5F5F5] text-[10px] font-semibold px-2 py-1 tracking-widest uppercase z-10">
-            {product.tag}
-          </span>
-
-          {/* Product illustration */}
-          <img
-            src={product.img}
-            alt={product.name}
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-          />
-
-          {/* Hover overlay */}
-          <div className="absolute inset-0 bg-[#D32F3A] opacity-0 group-hover:opacity-[0.06] transition-opacity duration-200" />
-        </div>
-      </Link>
-
-      {/* Info */}
-      <div className="p-5 flex flex-col gap-4 flex-1">
-        <div>
-          <h3 className="text-[#F5F5F5] font-semibold text-sm tracking-wide leading-tight mb-1">
-            {product.name}
-          </h3>
-          <div className="flex items-center gap-2">
-            <span className="text-[#F5F5F5] text-xl font-bold">
-              ฿{product.price.toLocaleString()}
-            </span>
-            {product.available ? (
-              <span className="text-[10px] text-[#4ade80] tracking-widest uppercase">{t.inStock}</span>
-            ) : (
-              <span className="text-[10px] text-[#A5A5A5] tracking-widest uppercase">{t.outOfStock}</span>
-            )}
-          </div>
-        </div>
-
-        <button className="mt-auto w-full bg-[#0F0F10] hover:bg-[#D32F3A] border border-[#2B2B2E] hover:border-[#D32F3A] text-[#A5A5A5] hover:text-[#F5F5F5] text-xs font-semibold tracking-widest uppercase py-3 transition-all duration-200">
-          {t.addToCart}
-        </button>
-      </div>
-    </div>
   );
 }

@@ -1,4 +1,3 @@
-import Navbar from "@/app/components/layout/Navbar";
 import Footer from "@/app/components/layout/Footer";
 import Hero from "@/app/components/home/Hero";
 import Categories from "@/app/components/home/Categories";
@@ -9,7 +8,6 @@ import CTABanner from "@/app/components/home/CTABanner";
 export default function HomePage() {
   return (
     <>
-      <Navbar />
       <main>
         <Hero />
         <Categories />
