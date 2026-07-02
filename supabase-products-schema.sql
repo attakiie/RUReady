@@ -75,7 +75,7 @@ INSERT INTO public.products (slug, name_en, name_th, desc_en, desc_th, price, st
     'IPSC-spec steel mini popper target with spring-loaded auto-reset mechanism. A-zone clearly marked. Built for competition.',
     'เป้าเหล็ก Mini Popper มาตรฐาน IPSC ระบบ spring reset อัตโนมัติ มีเส้น A-zone ชัดเจน เหมาะสำหรับฝึกซ้อมและแข่งขัน',
     180, 15, 'targets',
-    '{"/images/prod-popper.svg"}',
+    '{"/images/prod-mini-popper-1.jpg", "/images/prod-mini-popper-2.png"}',
     'IPSC'
   )
 ON CONFLICT (slug) DO NOTHING;
