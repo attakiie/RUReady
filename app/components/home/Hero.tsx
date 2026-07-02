@@ -196,7 +196,7 @@ export default function Hero() {
                 <img
                   src="/images/hero-gas-products.png"
                   alt="Green Gas — TOPGAS & ET-1000"
-                  className="w-full h-full object-cover object-center"
+                  className="w-full h-full object-contain object-center"
                 />
               </div>
             </div>
