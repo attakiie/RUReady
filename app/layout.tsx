@@ -6,13 +6,46 @@ import CartDrawer from "@/app/components/cart/CartDrawer";
 import Navbar from "@/app/components/layout/Navbar";
 
 export const metadata: Metadata = {
-  title: "R U READY — Action Air Gear",
+  title: {
+    default: "R U READY — อุปกรณ์ Action Air & IPSC",
+    template: "%s | R U READY",
+  },
   description:
-    "Performance gear for Action Air & IPSC players. Built by players. Tested on the range.",
+    "ร้านอุปกรณ์ Action Air และ IPSC ในไทย Green Gas, เป้ายิง, อุปกรณ์เสริม จัดส่งทั่วประเทศ",
+  keywords: ["action air", "IPSC", "green gas", "เป้ายิง", "อุปกรณ์ยิงปืน", "airsoft", "ไทย", "R U READY"],
+  metadataBase: new URL("https://ru-ready.vercel.app"),
+  alternates: {
+    canonical: "/",
+  },
   openGraph: {
-    title: "R U READY — Action Air Gear",
-    description: "Performance gear for Action Air & IPSC players.",
+    title: "R U READY — อุปกรณ์ Action Air & IPSC",
+    description: "ร้านอุปกรณ์ Action Air และ IPSC ในไทย จัดส่งทั่วประเทศ",
     type: "website",
+    url: "https://ru-ready.vercel.app",
+    siteName: "R U READY",
+    locale: "th_TH",
+    images: [
+      {
+        url: "/images/hero-gas-products.png",
+        width: 1200,
+        height: 630,
+        alt: "R U READY — Action Air Gear",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "R U READY — อุปกรณ์ Action Air & IPSC",
+    description: "ร้านอุปกรณ์ Action Air และ IPSC ในไทย จัดส่งทั่วประเทศ",
+    images: ["/images/hero-gas-products.png"],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+    },
   },
 };
 

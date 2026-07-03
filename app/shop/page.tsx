@@ -120,7 +120,7 @@ function ShopContent() {
   return (
     <>
       {/* Filters row */}
-      <div className="flex flex-col sm:flex-row gap-3 mb-8">
+      <div className="flex gap-2 mb-6">
         <div className="relative flex-1">
           <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#3A3A3E]" />
           <input
@@ -139,12 +139,12 @@ function ShopContent() {
             </button>
           )}
         </div>
-        <div className="relative">
+        <div className="relative shrink-0">
           <SlidersHorizontal size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#3A3A3E] pointer-events-none" />
           <select
             value={sort}
             onChange={(e) => setSort(e.target.value)}
-            className="appearance-none bg-[#1A1A1C] border border-[#2B2B2E] focus:border-[#D32F3A] text-[#A5A5A5] text-sm pl-9 pr-10 py-3 outline-none transition-colors cursor-pointer min-w-[180px]"
+            className="appearance-none bg-[#1A1A1C] border border-[#2B2B2E] focus:border-[#D32F3A] text-[#A5A5A5] text-sm pl-9 pr-8 py-3 outline-none transition-colors cursor-pointer w-[130px] sm:w-[180px]"
           >
             {t.sortOptions.map((o) => (
               <option key={o.value} value={o.value}>{o.label}</option>
@@ -153,8 +153,8 @@ function ShopContent() {
         </div>
       </div>
 
-      {/* Category chips */}
-      <div className="flex flex-wrap gap-2 mb-8">
+      {/* Category chips — scrollable on mobile */}
+      <div className="flex gap-2 mb-6 overflow-x-auto scrollbar-none pb-1 -mx-4 px-4 sm:mx-0 sm:px-0 sm:flex-wrap">
         <CategoryChip active={activeCategory === "all"} onClick={() => setCategory("all")}>
           {t.all}
         </CategoryChip>
@@ -184,7 +184,7 @@ function ShopContent() {
 
       {/* Grid */}
       {loading ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-[#2B2B2E]">
+        <div className="grid grid-cols-2 lg:grid-cols-3 gap-px bg-[#2B2B2E]">
           {[1, 2, 3].map((i) => (
             <div key={i} className="bg-[#1A1A1C] aspect-square animate-pulse" />
           ))}
@@ -195,7 +195,7 @@ function ShopContent() {
           <p className="text-[#555] text-sm">{t.noResultsSub}</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-[#2B2B2E]">
+        <div className="grid grid-cols-2 lg:grid-cols-3 gap-px bg-[#2B2B2E]">
           {filtered.map((product) => (
             <ProductCard key={product.id} product={product} t={t} lang={lang} />
           ))}
@@ -228,7 +228,7 @@ export default function ShopPage() {
 
         {/* Wrap useSearchParams content in Suspense */}
         <Suspense fallback={
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-[#2B2B2E]">
+          <div className="grid grid-cols-2 lg:grid-cols-3 gap-px bg-[#2B2B2E]">
             {[1, 2, 3].map((i) => (
               <div key={i} className="bg-[#1A1A1C] aspect-square animate-pulse" />
             ))}
@@ -251,7 +251,7 @@ function CategoryChip({
   return (
     <button
       onClick={onClick}
-      className={`text-xs font-semibold tracking-widest uppercase px-4 py-2 transition-all duration-150 ${
+      className={`text-xs font-semibold tracking-widest uppercase px-4 py-2.5 transition-all duration-150 whitespace-nowrap ${
         active
           ? "bg-[#D32F3A] text-[#F5F5F5] border border-[#D32F3A]"
           : "bg-transparent text-[#A5A5A5] border border-[#2B2B2E] hover:border-[#D32F3A] hover:text-[#F5F5F5]"
@@ -297,29 +297,29 @@ function ProductCard({
         </div>
       </Link>
 
-      <div className="p-5 flex flex-col gap-4 flex-1">
+      <div className="p-3 sm:p-5 flex flex-col gap-3 sm:gap-4 flex-1">
         <div>
           <Link href={`/products/${product.slug}`}>
-            <h3 className="text-[#F5F5F5] font-semibold text-sm tracking-wide leading-tight mb-2 hover:text-[#D32F3A] transition-colors">
+            <h3 className="text-[#F5F5F5] font-semibold text-xs sm:text-sm tracking-wide leading-tight mb-1 hover:text-[#D32F3A] transition-colors">
               {name}
             </h3>
           </Link>
-          <div className="flex items-center gap-2">
-            <span className="text-[#F5F5F5] text-xl font-bold">
+          <div className="flex items-baseline gap-1.5 flex-wrap">
+            <span className="text-[#F5F5F5] text-base sm:text-xl font-bold">
               ฿{product.price.toLocaleString()}
             </span>
             {inStock ? (
-              <span className="text-[10px] text-[#4ade80] tracking-widest uppercase">{t.inStock}</span>
+              <span className="text-[9px] sm:text-[10px] text-[#4ade80] tracking-widest uppercase">{t.inStock}</span>
             ) : (
-              <span className="text-[10px] text-[#A5A5A5] tracking-widest uppercase">{t.outOfStock}</span>
+              <span className="text-[9px] sm:text-[10px] text-[#A5A5A5] tracking-widest uppercase">{t.outOfStock}</span>
             )}
           </div>
         </div>
         <Link
           href={`/products/${product.slug}`}
-          className="mt-auto w-full flex items-center justify-center gap-2 bg-[#0F0F10] hover:bg-[#D32F3A] border border-[#2B2B2E] hover:border-[#D32F3A] text-[#A5A5A5] hover:text-[#F5F5F5] text-xs font-semibold tracking-widest uppercase py-3 transition-all duration-200"
+          className="mt-auto w-full flex items-center justify-center gap-1 sm:gap-2 bg-[#0F0F10] hover:bg-[#D32F3A] border border-[#2B2B2E] hover:border-[#D32F3A] text-[#A5A5A5] hover:text-[#F5F5F5] text-[10px] sm:text-xs font-semibold tracking-widest uppercase py-2.5 sm:py-3 transition-all duration-200"
         >
-          {t.addToCart} <ArrowRight size={12} />
+          {t.addToCart} <ArrowRight size={10} className="sm:w-3 sm:h-3" />
         </Link>
       </div>
     </div>

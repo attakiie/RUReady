@@ -50,24 +50,24 @@ export default function WhyUs() {
         </div>
 
         {/* Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
           {t.pillars.map((pillar, i) => {
             const Icon = icons[i];
             return (
               <div key={i} className="group border-t-2 border-[#D32F3A]/40 pt-6">
                 {/* Number */}
                 <div
-                  className="text-[#2B2B2E] text-[80px] leading-none font-display mb-4 select-none"
+                  className="text-[#2B2B2E] text-[52px] sm:text-[80px] leading-none font-display mb-3 sm:mb-4 select-none"
                   style={{ fontFamily: "'Bebas Neue', sans-serif" }}
                   aria-hidden
                 >
                   0{i + 1}
                 </div>
-                <Icon size={24} className="text-[#D32F3A] mb-4" strokeWidth={1.5} />
-                <h3 className="text-[#F5F5F5] font-semibold text-sm tracking-wide uppercase mb-2">
+                <Icon size={20} className="text-[#D32F3A] mb-3 sm:mb-4" strokeWidth={1.5} />
+                <h3 className="text-[#F5F5F5] font-semibold text-xs sm:text-sm tracking-wide uppercase mb-2">
                   {pillar.title}
                 </h3>
-                <p className="text-[#A5A5A5] text-sm leading-relaxed">
+                <p className="text-[#A5A5A5] text-xs sm:text-sm leading-relaxed">
                   {pillar.desc}
                 </p>
               </div>

@@ -26,7 +26,12 @@ export default function LoginPage() {
     });
 
     if (loginError) {
-      setError("อีเมลหรือรหัสผ่านไม่ถูกต้อง");
+      const msg = loginError.message ?? "";
+      if (msg.includes("Email not confirmed")) {
+        setError("กรุณายืนยัน email ก่อนเข้าสู่ระบบ โปรดตรวจสอบกล่องขาเข้าของคุณ");
+      } else {
+        setError("อีเมลหรือรหัสผ่านไม่ถูกต้อง");
+      }
       setLoading(false);
       return;
     }

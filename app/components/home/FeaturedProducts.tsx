@@ -101,13 +101,13 @@ export default function FeaturedProducts() {
 
         {/* Products Grid */}
         {products.length === 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-px bg-[#2B2B2E]">
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-px bg-[#2B2B2E]">
             {[1, 2, 3].map((i) => (
               <div key={i} className="bg-[#1A1A1C] aspect-square animate-pulse" />
             ))}
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-px bg-[#2B2B2E]">
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-px bg-[#2B2B2E]">
             {products.map((product) => {
               const name = lang === "en" ? product.name_en : product.name_th;
               const img = product.images?.[0] ?? null;
@@ -140,21 +140,21 @@ export default function FeaturedProducts() {
                   </Link>
 
                   {/* Info */}
-                  <div className="p-5 flex flex-col gap-4 flex-1">
+                  <div className="p-3 sm:p-5 flex flex-col gap-3 sm:gap-4 flex-1">
                     <div>
                       <Link href={`/products/${product.slug}`}>
-                        <h3 className="text-[#F5F5F5] font-semibold text-sm tracking-wide leading-tight mb-1 hover:text-[#D32F3A] transition-colors">
+                        <h3 className="text-[#F5F5F5] font-semibold text-xs sm:text-sm tracking-wide leading-tight mb-1 hover:text-[#D32F3A] transition-colors">
                           {name}
                         </h3>
                       </Link>
-                      <div className="flex items-center gap-2">
-                        <span className="text-[#F5F5F5] text-xl font-bold">
+                      <div className="flex items-baseline gap-1.5 flex-wrap">
+                        <span className="text-[#F5F5F5] text-base sm:text-xl font-bold">
                           ฿{product.price.toLocaleString()}
                         </span>
                         {inStock ? (
-                          <span className="text-[10px] text-[#4ade80] tracking-widest uppercase">{t.inStock}</span>
+                          <span className="text-[9px] sm:text-[10px] text-[#4ade80] tracking-widest uppercase">{t.inStock}</span>
                         ) : (
-                          <span className="text-[10px] text-[#A5A5A5] tracking-widest uppercase">{t.outOfStock}</span>
+                          <span className="text-[9px] sm:text-[10px] text-[#A5A5A5] tracking-widest uppercase">{t.outOfStock}</span>
                         )}
                       </div>
                     </div>
@@ -162,7 +162,7 @@ export default function FeaturedProducts() {
                     <button
                       onClick={() => inStock && handleAdd(product)}
                       disabled={!inStock}
-                      className={`mt-auto w-full text-xs font-semibold tracking-widest uppercase py-3 transition-all duration-200 border ${
+                      className={`mt-auto w-full text-[10px] sm:text-xs font-semibold tracking-widest uppercase py-2.5 sm:py-3 transition-all duration-200 border ${
                         wasAdded
                           ? "bg-[#1a2e1a] border-[#2e5a2e] text-[#4ade80]"
                           : inStock

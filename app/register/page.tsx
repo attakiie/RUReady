@@ -240,8 +240,11 @@ export default function RegisterPage() {
             )}
           </button>
 
-          <p className="text-[#2B2B2E] text-xs text-center leading-relaxed">
-            การสมัครสมาชิกถือว่าคุณยอมรับเงื่อนไขการใช้งาน
+          <p className="text-[#555] text-xs text-center leading-relaxed">
+            การสมัครสมาชิกถือว่าคุณยอมรับ{" "}
+            <a href="/terms" className="underline hover:text-[#D32F3A] transition-colors">
+              ข้อกำหนดและนโยบายความเป็นส่วนตัว
+            </a>
           </p>
         </form>
       </div>

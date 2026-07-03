@@ -89,7 +89,7 @@ export default function Categories() {
               <Link
                 key={cat.id}
                 href={`/shop?cat=${cat.id}`}
-                className="group relative flex flex-col p-6 bg-[#1A1A1C] border border-[#2B2B2E] hover:border-[#D32F3A] transition-all duration-200 overflow-hidden"
+                className="group relative flex flex-col p-4 sm:p-6 bg-[#1A1A1C] border border-[#2B2B2E] hover:border-[#D32F3A] transition-all duration-200 overflow-hidden"
               >
                 {/* Red glow on hover */}
                 <div className="absolute inset-0 bg-[#D32F3A] opacity-0 group-hover:opacity-[0.04] transition-opacity duration-200" />
@@ -105,7 +105,7 @@ export default function Categories() {
                 {/* Text */}
                 <div>
                   <h3
-                    className="text-[28px] leading-none font-display text-[#F5F5F5] mb-2 group-hover:text-[#D32F3A] transition-colors duration-200"
+                    className="text-[22px] sm:text-[28px] leading-none font-display text-[#F5F5F5] mb-2 group-hover:text-[#D32F3A] transition-colors duration-200"
                     style={{ fontFamily: "'Bebas Neue', sans-serif" }}
                   >
                     {cat.label}

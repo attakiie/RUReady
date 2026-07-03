@@ -48,6 +48,17 @@ body {
 ::-webkit-scrollbar-thumb { background: #2B2B2E; border-radius: 2px; }
 ::-webkit-scrollbar-thumb:hover { background: #D32F3A; }
 
+/* Hide scrollbar for tab navigation on mobile */
+.scrollbar-none { scrollbar-width: none; }
+.scrollbar-none::-webkit-scrollbar { display: none; }
+
+/* Mobile touch targets — minimum 44px */
+@media (max-width: 640px) {
+  button, a[role="button"] {
+    min-height: 36px;
+  }
+}
+
 /* Selection */
 ::selection {
   background: #D32F3A;

@@ -13,9 +13,9 @@ const copy = {
     channels: [
       {
         icon: "LINE",
-        label: "LINE Official",
-        value: "@ruready",
-        href: "https://line.me/R/ti/p/@ruready",
+        label: "LINE OpenChat",
+        value: "R U Ready OpenChat",
+        href: "https://line.me/ti/g2/eQ6xRJ2zwfCd0W99zlxQhMGkPBi_ZqOzVylHBA?utm_source=invitation&utm_medium=link_copy&utm_campaign=default",
         cta: "Open LINE",
         desc: "Fastest response — usually within the hour",
       },
@@ -45,9 +45,9 @@ const copy = {
     channels: [
       {
         icon: "LINE",
-        label: "LINE Official",
-        value: "@ruready",
-        href: "https://line.me/R/ti/p/@ruready",
+        label: "LINE OpenChat",
+        value: "R U Ready OpenChat",
+        href: "https://line.me/ti/g2/eQ6xRJ2zwfCd0W99zlxQhMGkPBi_ZqOzVylHBA?utm_source=invitation&utm_medium=link_copy&utm_campaign=default",
         cta: "เปิด LINE",
         desc: "ตอบเร็วที่สุด ปกติภายใน 1 ชั่วโมง",
       },

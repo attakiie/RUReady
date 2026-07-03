@@ -128,11 +128,11 @@ export default function Hero() {
 
       {/* Content */}
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-16 w-full">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center min-h-[80vh]">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center min-h-[80vh]">
           {/* Left — Text */}
           <div className="flex flex-col justify-center">
             {/* Eyebrow */}
-            <div className="flex items-center gap-3 mb-6">
+            <div className="flex items-center gap-3 mb-4 lg:mb-6">
               <span className="block w-8 h-px bg-[#D32F3A]" />
               <span className="text-[#D32F3A] text-xs font-semibold tracking-[0.2em] uppercase">
                 {t.eyebrow}
@@ -141,7 +141,7 @@ export default function Hero() {
 
             {/* Main headline */}
             <h1
-              className="text-[clamp(64px,10vw,120px)] leading-[0.92] font-display text-[#F5F5F5] mb-6"
+              className="text-[clamp(52px,10vw,120px)] leading-[0.92] font-display text-[#F5F5F5] mb-4 lg:mb-6"
               style={{ fontFamily: "'Bebas Neue', sans-serif" }}
             >
               ARE YOU
@@ -153,45 +153,55 @@ export default function Hero() {
               NEXT STAGE?
             </h1>
 
+            {/* Mobile product image — between headline and sub */}
+            <div className="block lg:hidden relative my-5 mx-auto w-full max-w-[260px]">
+              <div className="absolute inset-0 border border-[#2B2B2E] pointer-events-none z-10" />
+              <div className="absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 border-[#D32F3A] z-10" />
+              <div className="absolute bottom-0 right-0 w-8 h-8 border-b-2 border-r-2 border-[#D32F3A] z-10" />
+              <img
+                src="/images/hero-gas-products.png"
+                alt="Green Gas — TOPGAS & ET-1000"
+                className="w-full h-auto block"
+              />
+            </div>
+
             {/* Subheadline */}
-            <p className="text-[#A5A5A5] text-lg leading-relaxed max-w-md mb-10 whitespace-pre-line">
+            <p className="text-[#A5A5A5] text-base lg:text-lg leading-relaxed max-w-md mb-8 lg:mb-10 whitespace-pre-line">
               {t.sub}
             </p>
 
             {/* CTA Buttons */}
-            <div className="flex flex-wrap gap-4">
+            <div className="flex flex-col sm:flex-row gap-3">
               <Link
                 href="/shop"
-                className="group inline-flex items-center gap-2 bg-[#D32F3A] hover:bg-[#A02029] text-[#F5F5F5] font-semibold text-sm px-7 py-3.5 tracking-wide uppercase transition-colors duration-200"
+                className="group inline-flex items-center justify-center gap-2 bg-[#D32F3A] hover:bg-[#A02029] text-[#F5F5F5] font-semibold text-sm px-7 py-4 tracking-wide uppercase transition-colors duration-200"
               >
                 {t.gearUp}
                 <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform duration-200" />
               </Link>
               <Link
                 href="/shop"
-                className="inline-flex items-center gap-2 border border-[#2B2B2E] hover:border-[#F5F5F5] text-[#A5A5A5] hover:text-[#F5F5F5] font-semibold text-sm px-7 py-3.5 tracking-wide uppercase transition-colors duration-200"
+                className="inline-flex items-center justify-center gap-2 border border-[#2B2B2E] hover:border-[#F5F5F5] text-[#A5A5A5] hover:text-[#F5F5F5] font-semibold text-sm px-7 py-4 tracking-wide uppercase transition-colors duration-200"
               >
                 {t.shopAll}
               </Link>
             </div>
 
             {/* Stats */}
-            <div className="flex gap-8 mt-12 pt-8 border-t-2 border-[#D32F3A]/30">
+            <div className="flex gap-8 mt-8 lg:mt-12 pt-6 lg:pt-8 border-t-2 border-[#D32F3A]/30">
               {t.stats.map((s) => (
                 <Stat key={s.label} value={s.value} label={s.label} />
               ))}
             </div>
           </div>
 
-          {/* Right — Product image */}
+          {/* Right — Product image (desktop only) */}
           <div className="hidden lg:flex items-center justify-center relative">
             <div className="relative w-full max-w-md">
               {/* Frame corners */}
               <div className="absolute inset-0 border border-[#2B2B2E] pointer-events-none z-10" />
               <div className="absolute top-0 left-0 w-12 h-12 border-t-2 border-l-2 border-[#D32F3A] z-10" />
               <div className="absolute bottom-0 right-0 w-12 h-12 border-b-2 border-r-2 border-[#D32F3A] z-10" />
-
-              {/* Product image — natural height */}
               <img
                 src="/images/hero-gas-products.png"
                 alt="Green Gas — TOPGAS & ET-1000"

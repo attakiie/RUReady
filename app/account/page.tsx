@@ -230,16 +230,18 @@ export default function AccountPage() {
           </div>
         </div>
 
-        {/* Tabs */}
-        <div className="flex border-b border-[#2B2B2E] mb-8">
-          {tabs.map((t) => (
-            <button key={t.key} onClick={() => setTab(t.key)}
-              className={`flex items-center gap-2 px-4 py-3 text-xs font-semibold tracking-widest uppercase transition-colors border-b-2 -mb-px ${
-                tab === t.key ? "border-[#D32F3A] text-[#F5F5F5]" : "border-transparent text-[#555] hover:text-[#A5A5A5]"
-              }`}>
-              {t.icon} {t.label}
-            </button>
-          ))}
+        {/* Tabs — horizontally scrollable on mobile */}
+        <div className="border-b border-[#2B2B2E] mb-8 overflow-x-auto scrollbar-none -mx-4 px-4 sm:mx-0 sm:px-0">
+          <div className="flex min-w-max sm:min-w-0">
+            {tabs.map((t) => (
+              <button key={t.key} onClick={() => setTab(t.key)}
+                className={`flex items-center gap-2 px-4 py-3.5 text-xs font-semibold tracking-widest uppercase transition-colors border-b-2 -mb-px whitespace-nowrap ${
+                  tab === t.key ? "border-[#D32F3A] text-[#F5F5F5]" : "border-transparent text-[#555] hover:text-[#A5A5A5]"
+                }`}>
+                {t.icon} {t.label}
+              </button>
+            ))}
+          </div>
         </div>
 
         {/* ── Profile tab ── */}

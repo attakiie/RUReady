@@ -18,6 +18,7 @@ const copy = {
         { label: "Shipping", href: "/shipping" },
         { label: "FAQ", href: "/faq" },
         { label: "Contact", href: "/contact" },
+        { label: "Terms & Privacy", href: "/terms" },
       ],
     },
     stayReady: "Stay Ready",
@@ -40,6 +41,7 @@ const copy = {
         { label: "การจัดส่ง", href: "/shipping" },
         { label: "คำถามที่พบบ่อย", href: "/faq" },
         { label: "ติดต่อเรา", href: "/contact" },
+        { label: "ข้อกำหนด & ความเป็นส่วนตัว", href: "/terms" },
       ],
     },
     stayReady: "ติดตามข่าวสาร",
@@ -50,9 +52,11 @@ const copy = {
   },
 };
 
+const LINE_OPENCHAT = "https://line.me/ti/g2/eQ6xRJ2zwfCd0W99zlxQhMGkPBi_ZqOzVylHBA?utm_source=invitation&utm_medium=link_copy&utm_campaign=default";
+
 const socials = [
   { label: "Facebook", href: "https://facebook.com/rureadythailand" },
-  { label: "LINE", href: "https://line.me/R/ti/p/@ruready" },
+  { label: "LINE", href: LINE_OPENCHAT },
 ];
 
 export default function Footer() {
@@ -61,7 +65,7 @@ export default function Footer() {
 
   return (
     <footer className="bg-[#1A1A1C] border-t-2 border-[#D32F3A]">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-10">
           {/* Brand */}
           <div className="col-span-2 md:col-span-1">
@@ -120,7 +124,7 @@ export default function Footer() {
               {t.newsletter}
             </p>
             <a
-              href="https://line.me/R/ti/p/@ruready"
+              href={LINE_OPENCHAT}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 border border-[#2B2B2E] hover:border-[#D32F3A] text-[#A5A5A5] hover:text-[#D32F3A] text-xs font-semibold px-4 py-2.5 tracking-widest uppercase transition-colors duration-200"

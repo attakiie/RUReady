@@ -199,7 +199,14 @@ export default function CheckoutPage() {
 
     const { error: itemsErr } = await supabase.from("order_items").insert(orderItems);
     if (itemsErr) {
-      setError("บันทึกรายการสินค้าไม่สำเร็จ");
+      // Rollback: delete the order we just created
+      await supabase.from("orders").delete().eq("id", order.id);
+      const isStockError = itemsErr.message?.includes("สินค้าไม่เพียงพอ");
+      setError(
+        isStockError
+          ? "สินค้าบางรายการหมดสต็อก กรุณาตรวจสอบตะกร้าและลองใหม่"
+          : "บันทึกรายการสินค้าไม่สำเร็จ กรุณาลองใหม่"
+      );
       setLoading(false);
       return;
     }

@@ -127,7 +127,7 @@ export default function ProductPage() {
   const inStock = product.stock > 0;
 
   return (
-    <div className="min-h-screen bg-[#0F0F10] pt-24 pb-24">
+    <div className="min-h-screen bg-[#0F0F10] pt-24 pb-28 sm:pb-24">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Breadcrumb */}
         <nav className="flex items-center gap-2 text-xs text-[#555] mb-8 tracking-widest uppercase">
@@ -156,7 +156,7 @@ export default function ProductPage() {
           </div>
 
           {/* Right — Details */}
-          <div className="bg-[#1A1A1C] flex flex-col p-8 lg:p-12">
+          <div className="bg-[#1A1A1C] flex flex-col p-5 sm:p-8 lg:p-12">
             <Link
               href={`/shop?cat=${product.category_id}`}
               className="text-[#D32F3A] text-xs font-semibold tracking-[0.2em] uppercase mb-3 hover:text-[#F5F5F5] transition-colors"
@@ -245,7 +245,7 @@ export default function ProductPage() {
             <p className="text-[#D32F3A] text-xs font-semibold tracking-[0.2em] uppercase mb-4">
               {lang === "th" ? "สินค้าที่เกี่ยวข้อง" : "Related Products"}
             </p>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-px bg-[#2B2B2E]">
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-px bg-[#2B2B2E]">
               {related.map((p) => {
                 const rname = lang === "en" ? p.name_en : p.name_th;
                 const rimg = p.images?.[0] ?? null;
@@ -267,6 +267,39 @@ export default function ProductPage() {
             </div>
           </div>
         )}
+      </div>
+
+      {/* Sticky mobile Add-to-Cart bar */}
+      <div className="fixed bottom-0 left-0 right-0 z-40 sm:hidden bg-[#0F0F10]/95 backdrop-blur-md border-t border-[#2B2B2E] px-4 py-3 flex items-center gap-3">
+        <div className="min-w-0 flex-1">
+          <p className="text-[#F5F5F5] font-semibold text-sm leading-tight truncate">{name}</p>
+          <p className="text-[#D32F3A] font-bold text-base">฿{product.price.toLocaleString()}</p>
+        </div>
+        <div className="flex items-center border border-[#2B2B2E] shrink-0">
+          <button onClick={() => setQty((q) => Math.max(1, q - 1))} disabled={!inStock}
+            className="w-9 h-10 flex items-center justify-center text-[#A5A5A5] hover:text-[#F5F5F5] hover:bg-[#2B2B2E] transition-colors disabled:opacity-40">
+            <Minus size={13} />
+          </button>
+          <span className="w-8 text-center text-[#F5F5F5] text-sm font-semibold">{qty}</span>
+          <button onClick={() => setQty((q) => Math.min(product.stock, q + 1))} disabled={!inStock}
+            className="w-9 h-10 flex items-center justify-center text-[#A5A5A5] hover:text-[#F5F5F5] hover:bg-[#2B2B2E] transition-colors disabled:opacity-40">
+            <Plus size={13} />
+          </button>
+        </div>
+        <button
+          onClick={handleAddToCart}
+          disabled={!inStock}
+          className={`shrink-0 flex items-center gap-1.5 h-10 px-5 font-semibold text-xs tracking-widest uppercase transition-all duration-200 ${
+            added
+              ? "bg-[#2e5a2e] text-[#4ade80]"
+              : inStock
+              ? "bg-[#D32F3A] hover:bg-[#A02029] text-[#F5F5F5]"
+              : "bg-[#1A1A1C] text-[#555] cursor-not-allowed"
+          }`}
+        >
+          {added ? <Check size={13} /> : <ShoppingBag size={13} />}
+          {added ? t.added : t.addToCart}
+        </button>
       </div>
     </div>
   );
