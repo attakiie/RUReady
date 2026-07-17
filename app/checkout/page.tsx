@@ -8,6 +8,7 @@ import { createClient } from "@/app/lib/supabase";
 import { useCart } from "@/app/contexts/CartContext";
 import { useLanguage } from "@/app/contexts/LanguageContext";
 import { promptPayQRImageUrl } from "@/app/lib/promptpay";
+import { useFirstOrderEligibility } from "@/app/lib/useFirstOrderEligibility";
 
 const STORE_PHONE = process.env.NEXT_PUBLIC_PROMPTPAY_PHONE ?? "0800000000";
 
@@ -106,7 +107,7 @@ export default function CheckoutPage() {
   const [selectedAddrId, setSelectedAddrId] = useState<string | "new">("new");
   const [addrDropdownOpen, setAddrDropdownOpen] = useState(false);
   const [userId, setUserId] = useState<string | null>(null);
-  const [isFirstOrder, setIsFirstOrder] = useState(false);
+  const { isFirstOrder } = useFirstOrderEligibility();
 
   const NEW_MEMBER_DISCOUNT = 30;
 
@@ -122,13 +123,6 @@ export default function CheckoutPage() {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return;
       setUserId(user.id);
-
-      // New-member promo: ฿30 off if this account has never placed an order before
-      const { count: priorOrders } = await supabase
-        .from("orders")
-        .select("id", { count: "exact", head: true })
-        .eq("user_id", user.id);
-      setIsFirstOrder((priorOrders ?? 0) === 0);
 
       // Load saved addresses
       const { data: addrs } = await supabase

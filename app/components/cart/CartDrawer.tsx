@@ -5,6 +5,7 @@ import Link from "next/link";
 import { X, Trash2, ShoppingBag, ArrowRight, Plus, Minus } from "lucide-react";
 import { useCart } from "@/app/contexts/CartContext";
 import { useLanguage } from "@/app/contexts/LanguageContext";
+import { useFirstOrderEligibility } from "@/app/lib/useFirstOrderEligibility";
 
 const copy = {
   en: {
@@ -13,6 +14,8 @@ const copy = {
     emptySub: "Head to the shop to gear up",
     shopNow: "Shop Now",
     subtotal: "Subtotal",
+    firstOrderDiscount: "First Order Discount",
+    total: "Total",
     checkout: "Checkout",
     continueShopping: "Continue Shopping",
     items: "items",
@@ -24,6 +27,8 @@ const copy = {
     emptySub: "ไปเลือกสินค้ากันเลย",
     shopNow: "ไปร้านค้า",
     subtotal: "ยอดรวม",
+    firstOrderDiscount: "ส่วนลดสมาชิกใหม่",
+    total: "ยอดรวมสุทธิ",
     checkout: "ชำระเงิน",
     continueShopping: "เลือกต่อ",
     items: "ชิ้น",
@@ -31,10 +36,15 @@ const copy = {
   },
 };
 
+const NEW_MEMBER_DISCOUNT = 30;
+
 export default function CartDrawer() {
   const { items, removeItem, updateQty, total, count, drawerOpen, setDrawerOpen } = useCart();
   const { lang } = useLanguage();
   const t = copy[lang];
+  const { isFirstOrder } = useFirstOrderEligibility();
+  const discount = isFirstOrder ? NEW_MEMBER_DISCOUNT : 0;
+  const grandTotal = Math.max(0, total - discount);
 
   // Lock body scroll when open
   useEffect(() => {
@@ -188,6 +198,21 @@ export default function CartDrawer() {
                 ฿{total.toLocaleString()}
               </span>
             </div>
+
+            {discount > 0 && (
+              <>
+                <div className="flex items-center justify-between">
+                  <span className="text-[#4ade80] text-sm uppercase tracking-widest">{t.firstOrderDiscount}</span>
+                  <span className="text-[#4ade80] text-sm font-bold">-฿{discount}</span>
+                </div>
+                <div className="flex items-center justify-between pt-1 border-t border-[#2B2B2E]">
+                  <span className="text-[#A5A5A5] text-sm uppercase tracking-widest">{t.total}</span>
+                  <span className="text-[#F5F5F5] text-xl font-bold">
+                    ฿{grandTotal.toLocaleString()}
+                  </span>
+                </div>
+              </>
+            )}
 
             {/* Buttons */}
             <Link

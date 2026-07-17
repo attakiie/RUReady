@@ -28,6 +28,7 @@ const copy = {
     outOfStock: "Out of Stock",
     addToCart: "Gear Up",
     added: "Added!",
+    firstOrderHint: "First purchase eligible for 30 THB discount",
   },
   th: {
     eyebrow: "ล่าสุด",
@@ -37,6 +38,7 @@ const copy = {
     outOfStock: "สินค้าหมด",
     addToCart: "หยิบใส่ตะกร้า",
     added: "เพิ่มแล้ว!",
+    firstOrderHint: "สั่งซื้อครั้งแรก รับส่วนลด 30 บาท",
   },
 };
 
@@ -159,6 +161,9 @@ export default function FeaturedProducts() {
                           <span className="text-[9px] sm:text-[10px] text-[#A5A5A5] tracking-widest uppercase">{t.outOfStock}</span>
                         )}
                       </div>
+                      <p className="text-[9px] sm:text-[10px] text-[#D32F3A]/80 mt-1">
+                        🔥 {t.firstOrderHint}
+                      </p>
                     </div>
 
                     <button

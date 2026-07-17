@@ -43,6 +43,7 @@ const copy = {
     noResultsSub: "Try a different search or category",
     results: "products",
     loading: "Loading…",
+    firstOrderHint: "First purchase eligible for 30 THB discount",
   },
   th: {
     title: "ร้านค้า",
@@ -61,6 +62,7 @@ const copy = {
     noResultsSub: "ลองค้นหาด้วยคำอื่น หรือเลือกหมวดหมู่อื่น",
     results: "รายการ",
     loading: "กำลังโหลด…",
+    firstOrderHint: "สั่งซื้อครั้งแรก รับส่วนลด 30 บาท",
   },
 };
 
@@ -172,7 +174,7 @@ function ShopContent() {
       {/* Shipping banner */}
       <div className="flex items-center gap-3 bg-[#1A1A1C] border border-[#2B2B2E] px-4 py-3 mb-6 text-xs text-[#A5A5A5]">
         <span className="text-base">🚚</span>
-        <span>{lang === "th" ? "จัดส่งทั่วประเทศ · ขวดแรก ฿50 · ขวดต่อไป ฿30" : "Nationwide shipping · First bottle ฿50 · Additional ฿30 each"}</span>
+        <span>{lang === "th" ? "จัดส่งทั่วประเทศ · แก๊ส กระป๋องแรก ฿50 ถัดไป ฿30 · สินค้าอื่น ฿30/ชิ้น" : "Nationwide shipping · Gas ฿50 first can, ฿30 each additional · Other items ฿30/pc"}</span>
       </div>
 
       {/* Result count */}
@@ -314,6 +316,9 @@ function ProductCard({
               <span className="text-[9px] sm:text-[10px] text-[#A5A5A5] tracking-widest uppercase">{t.outOfStock}</span>
             )}
           </div>
+          <p className="text-[9px] sm:text-[10px] text-[#D32F3A]/80 mt-1">
+            🔥 {t.firstOrderHint}
+          </p>
         </div>
         <Link
           href={`/products/${product.slug}`}

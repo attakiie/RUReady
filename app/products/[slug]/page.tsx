@@ -33,6 +33,7 @@ const copy = {
     stock: "Stock",
     units: "units",
     sku: "SKU",
+    firstOrderHint: "First purchase eligible for 30 THB discount",
   },
   th: {
     back: "กลับไปร้านค้า",
@@ -44,6 +45,7 @@ const copy = {
     stock: "สต๊อก",
     units: "ชิ้น",
     sku: "รหัสสินค้า",
+    firstOrderHint: "สั่งซื้อครั้งแรก รับส่วนลด 30 บาท",
   },
 };
 
@@ -172,7 +174,7 @@ export default function ProductPage() {
               {name}
             </h1>
 
-            <div className="flex items-center gap-4 mb-6">
+            <div className="flex items-center gap-4 mb-1">
               <span className="text-3xl font-bold text-[#F5F5F5]">
                 ฿{product.price.toLocaleString()}
               </span>
@@ -181,6 +183,9 @@ export default function ProductPage() {
                 {inStock ? t.inStock : t.outOfStock}
               </span>
             </div>
+            <p className="text-xs text-[#D32F3A]/80 mb-6">
+              🔥 {t.firstOrderHint}
+            </p>
 
             <p className="text-[#A5A5A5] text-sm leading-relaxed mb-8">{desc}</p>
 

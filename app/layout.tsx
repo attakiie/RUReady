@@ -4,6 +4,7 @@ import { LanguageProvider } from "@/app/contexts/LanguageContext";
 import { CartProvider } from "@/app/contexts/CartContext";
 import CartDrawer from "@/app/components/cart/CartDrawer";
 import Navbar from "@/app/components/layout/Navbar";
+import AnnouncementBar from "@/app/components/layout/AnnouncementBar";
 
 export const metadata: Metadata = {
   title: {
@@ -67,9 +68,13 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col bg-[#0F0F10] text-[#F5F5F5]">
         {/* Global red top stripe */}
         <div className="fixed top-0 left-0 right-0 h-[3px] bg-[#D32F3A] z-[100]" />
-        <div className="pt-[3px]">
+        <div
+          style={{ paddingTop: "calc(3px + var(--announce-h, 0px))" }}
+          className="transition-[padding-top] duration-200"
+        >
           <LanguageProvider>
             <CartProvider>
+              <AnnouncementBar />
               <Navbar />
               <CartDrawer />
               {children}

@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import Link from "next/link";
 import { ArrowRight, ChevronDown } from "lucide-react";
+import { motion } from "framer-motion";
 import { useLanguage } from "@/app/contexts/LanguageContext";
 
 const copy = {
@@ -16,6 +17,8 @@ const copy = {
     ],
     standBy: "Stand By...",
     athletePhoto: "Athlete Photo Here",
+    badgeLine1: "First Order",
+    badgeLine2: "Save 30 THB",
   },
   th: {
     eyebrow: "Action Air · IPSC · ไทยแลนด์",
@@ -27,6 +30,8 @@ const copy = {
     ],
     standBy: "กำลังมา...",
     athletePhoto: "รูปนักกีฬา",
+    badgeLine1: "ออเดอร์แรก",
+    badgeLine2: "ลด 30 บาท",
   },
 };
 
@@ -153,6 +158,11 @@ export default function Hero() {
               NEXT STAGE?
             </h1>
 
+            {/* Promo badge — mobile: below headline */}
+            <div className="flex lg:hidden justify-center mt-4 mb-1">
+              <PromoBadge line1={t.badgeLine1} line2={t.badgeLine2} />
+            </div>
+
             {/* Mobile product image — between headline and sub */}
             <div className="block lg:hidden relative my-5 mx-auto w-full max-w-[260px]">
               <div className="absolute inset-0 border border-[#2B2B2E] pointer-events-none z-10" />
@@ -207,6 +217,11 @@ export default function Hero() {
                 alt="Green Gas — TOPGAS & ET-1000"
                 className="w-full h-auto block"
               />
+
+              {/* Promo badge — desktop: top-right corner */}
+              <div className="absolute -top-3 -right-3 z-20">
+                <PromoBadge line1={t.badgeLine1} line2={t.badgeLine2} />
+              </div>
             </div>
           </div>
         </div>
@@ -217,6 +232,24 @@ export default function Hero() {
         <ChevronDown size={16} className="text-[#2B2B2E]" />
       </div>
     </section>
+  );
+}
+
+function PromoBadge({ line1, line2 }: { line1: string; line2: string }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, scale: 0.9 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 0.4, delay: 0.3, ease: "easeOut" }}
+      className="inline-flex flex-col items-center gap-0.5 bg-gradient-to-br from-[#D32F3A] to-[#A02029] rounded-lg px-4 py-2 shadow-lg shadow-[#D32F3A]/40"
+    >
+      <span className="text-[#F5F5F5] text-[9px] font-bold tracking-[0.15em] uppercase">
+        {line1}
+      </span>
+      <span className="text-[#F5F5F5] text-sm font-black tracking-wide leading-none">
+        {line2}
+      </span>
+    </motion.div>
   );
 }
 

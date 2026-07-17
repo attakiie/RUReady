@@ -77,7 +77,8 @@ export default function Navbar() {
   return (
     <>
       <nav
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-200 ${
+        style={{ top: "calc(3px + var(--announce-h, 0px))" }}
+        className={`fixed left-0 right-0 z-50 transition-[background-color,backdrop-filter,border-color,top] duration-200 ${
           scrolled
             ? "bg-[#0F0F10]/90 backdrop-blur-md border-b border-[#D32F3A]/40"
             : "bg-transparent"
