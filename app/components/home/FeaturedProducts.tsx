@@ -16,6 +16,7 @@ type Product = {
   stock: number;
   images: string[];
   tag: string;
+  category_id: string;
 };
 
 const copy = {
@@ -50,7 +51,7 @@ export default function FeaturedProducts() {
     const supabase = createClient();
     supabase
       .from("products")
-      .select("id, slug, name_en, name_th, price, stock, images, tag")
+      .select("id, slug, name_en, name_th, price, stock, images, tag, category_id")
       .eq("is_active", true)
       .order("created_at", { ascending: false })
       .limit(3)
@@ -66,6 +67,7 @@ export default function FeaturedProducts() {
         name_th: product.name_th,
         price: product.price,
         img: product.images?.[0] ?? "",
+        category_id: product.category_id,
       },
       1
     );

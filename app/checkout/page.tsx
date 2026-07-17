@@ -39,7 +39,7 @@ const copy = {
     qrHelp: "Open your banking app → Scan QR code → Transfer ฿",
     confirm: "Confirm Payment",
     confirming: "Saving order…",
-    freeShipNote: "Shipping: ฿50 first item · ฿30 each additional",
+    freeShipNote: "Shipping: Gas ฿50 first can · ฿30 each additional · Other items ฿30/pc",
     copied: "Copied!",
     copyPhone: "Copy number",
   },
@@ -61,21 +61,37 @@ const copy = {
     qrHelp: "เปิดแอปธนาคาร → สแกน QR → โอนเงิน ฿",
     confirm: "ยืนยันการชำระเงิน",
     confirming: "กำลังบันทึกออเดอร์…",
-    freeShipNote: "ค่าจัดส่ง: ขวดแรก ฿50 · ขวดต่อไป ฿30",
+    freeShipNote: "ค่าจัดส่ง: แก๊ส กระป๋องแรก ฿50 · ถัดไป ฿30 · สินค้าอื่น ฿30/ชิ้น",
     copied: "คัดลอกแล้ว!",
     copyPhone: "คัดลอกเบอร์",
   },
 };
 
-function calcShipping(totalQty: number): number {
-  if (totalQty === 0) return 0;
-  return 50 + Math.max(0, totalQty - 1) * 30;
+// GAS: tiered — first can ฿50, each additional can ฿30
+// Everything else (targets, accessories, 3D print, etc.): flat ฿30 per piece
+const GAS_CATEGORY = "gas";
+const GAS_FIRST = 50;
+const GAS_NEXT = 30;
+const FLAT_RATE = 30;
+
+function calcShipping(items: { category_id?: string; qty: number }[]): number {
+  const gasQty = items
+    .filter((i) => i.category_id === GAS_CATEGORY)
+    .reduce((sum, i) => sum + i.qty, 0);
+  const otherQty = items
+    .filter((i) => i.category_id !== GAS_CATEGORY)
+    .reduce((sum, i) => sum + i.qty, 0);
+
+  let total = 0;
+  if (gasQty > 0) total += GAS_FIRST + Math.max(0, gasQty - 1) * GAS_NEXT;
+  total += otherQty * FLAT_RATE;
+  return total;
 }
 
 export default function CheckoutPage() {
   const { lang } = useLanguage();
   const t = copy[lang];
-  const { items, total: subtotal, count, clearCart } = useCart();
+  const { items, total: subtotal, clearCart } = useCart();
   const router = useRouter();
 
   const [form, setForm] = useState({ fullName: "", phone: "", address: "", note: "" });
@@ -89,7 +105,7 @@ export default function CheckoutPage() {
   const [addrDropdownOpen, setAddrDropdownOpen] = useState(false);
   const [userId, setUserId] = useState<string | null>(null);
 
-  const shipping = calcShipping(count);
+  const shipping = calcShipping(items);
   const grandTotal = subtotal + shipping;
   const qrUrl = promptPayQRImageUrl(STORE_PHONE, grandTotal);
 

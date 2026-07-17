@@ -95,6 +95,7 @@ export default function ProductPage() {
         name_th: product.name_th,
         price: product.price,
         img: product.images?.[0] ?? "",
+        category_id: product.category_id,
       },
       qty
     );
