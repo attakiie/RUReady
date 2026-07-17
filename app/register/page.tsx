@@ -137,6 +137,10 @@ export default function RegisterPage() {
           </p>
         </div>
 
+        <div className="bg-[#D32F3A]/10 border border-[#D32F3A]/30 px-4 py-3 mb-6 text-sm text-[#F5F5F5]">
+          🎉 สมัครวันนี้ รับส่วนลด <span className="font-bold text-[#D32F3A]">฿30</span> ในบิลแรกทันที
+        </div>
+
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           {/* Name row */}
           <div className="grid grid-cols-2 gap-3">

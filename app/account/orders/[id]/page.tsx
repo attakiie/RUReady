@@ -28,6 +28,7 @@ type Order = {
   note: string;
   subtotal: number;
   shipping: number;
+  discount?: number;
   total: number;
   created_at: string;
   tracking_number?: string;
@@ -55,6 +56,7 @@ const copy = {
     breakdown: "Price Breakdown",
     subtotal: "Subtotal",
     shipping: "Shipping",
+    discount: "New member discount",
     total: "Total",
     note: "Note",
     tracking: "Tracking Number",
@@ -72,6 +74,7 @@ const copy = {
     breakdown: "สรุปราคา",
     subtotal: "ค่าสินค้า",
     shipping: "ค่าจัดส่ง",
+    discount: "ส่วนลดสมาชิกใหม่",
     total: "ยอดรวมทั้งสิ้น",
     note: "หมายเหตุ",
     tracking: "หมายเลขพัสดุ",
@@ -249,6 +252,12 @@ export default function OrderDetailPage() {
               <span className="text-[#555]">{t.shipping}</span>
               <span className="text-[#A5A5A5]">฿{order.shipping}</span>
             </div>
+            {!!order.discount && order.discount > 0 && (
+              <div className="flex justify-between text-sm">
+                <span className="text-[#4ade80]">{t.discount}</span>
+                <span className="text-[#4ade80]">-฿{order.discount}</span>
+              </div>
+            )}
             <div className="flex justify-between font-bold pt-2 border-t border-[#2B2B2E] mt-1">
               <span className="text-[#F5F5F5]">{t.total}</span>
               <span className="text-[#D32F3A] text-lg">฿{order.total.toLocaleString()}</span>

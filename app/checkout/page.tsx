@@ -42,6 +42,7 @@ const copy = {
     freeShipNote: "Shipping: Gas ฿50 first can · ฿30 each additional · Other items ฿30/pc",
     copied: "Copied!",
     copyPhone: "Copy number",
+    newMemberDiscount: "New member discount",
   },
   th: {
     title: "ชำระเงิน",
@@ -64,6 +65,7 @@ const copy = {
     freeShipNote: "ค่าจัดส่ง: แก๊ส กระป๋องแรก ฿50 · ถัดไป ฿30 · สินค้าอื่น ฿30/ชิ้น",
     copied: "คัดลอกแล้ว!",
     copyPhone: "คัดลอกเบอร์",
+    newMemberDiscount: "ส่วนลดสมาชิกใหม่",
   },
 };
 
@@ -104,9 +106,13 @@ export default function CheckoutPage() {
   const [selectedAddrId, setSelectedAddrId] = useState<string | "new">("new");
   const [addrDropdownOpen, setAddrDropdownOpen] = useState(false);
   const [userId, setUserId] = useState<string | null>(null);
+  const [isFirstOrder, setIsFirstOrder] = useState(false);
+
+  const NEW_MEMBER_DISCOUNT = 30;
 
   const shipping = calcShipping(items);
-  const grandTotal = subtotal + shipping;
+  const discount = isFirstOrder ? NEW_MEMBER_DISCOUNT : 0;
+  const grandTotal = Math.max(0, subtotal + shipping - discount);
   const qrUrl = promptPayQRImageUrl(STORE_PHONE, grandTotal);
 
   // Load saved addresses + prefill profile
@@ -116,6 +122,13 @@ export default function CheckoutPage() {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return;
       setUserId(user.id);
+
+      // New-member promo: ฿30 off if this account has never placed an order before
+      const { count: priorOrders } = await supabase
+        .from("orders")
+        .select("id", { count: "exact", head: true })
+        .eq("user_id", user.id);
+      setIsFirstOrder((priorOrders ?? 0) === 0);
 
       // Load saved addresses
       const { data: addrs } = await supabase
@@ -190,6 +203,7 @@ export default function CheckoutPage() {
         note: form.note.trim(),
         subtotal,
         shipping,
+        discount,
         total: grandTotal,
         status: "pending",
       })
@@ -375,6 +389,11 @@ export default function CheckoutPage() {
                   <div className="flex justify-between text-sm text-[#A5A5A5]">
                     <span>{t.shippingFee}</span><span>฿{shipping}</span>
                   </div>
+                  {discount > 0 && (
+                    <div className="flex justify-between text-sm text-[#4ade80]">
+                      <span>{t.newMemberDiscount}</span><span>-฿{discount}</span>
+                    </div>
+                  )}
                   <div className="flex justify-between text-lg font-bold text-[#F5F5F5] pt-2 border-t border-[#2B2B2E]">
                     <span>{t.total}</span>
                     <span className="text-[#D32F3A]">฿{grandTotal.toLocaleString()}</span>

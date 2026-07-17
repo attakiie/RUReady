@@ -19,6 +19,7 @@ type OrderItem = {
 type Order = {
   id: string; status: string; full_name: string; phone: string;
   address: string; note: string; subtotal: number; shipping: number;
+  discount?: number;
   total: number; created_at: string; user_id: string | null;
   tracking_number?: string; order_items: OrderItem[];
 };
@@ -448,6 +449,12 @@ export default function AdminPage() {
                                   <span className="text-[#555]">ค่าส่ง</span>
                                   <span className="text-[#A5A5A5]">฿{order.shipping}</span>
                                 </div>
+                                {!!order.discount && order.discount > 0 && (
+                                  <div className="flex justify-between text-sm">
+                                    <span className="text-[#4ade80]">ส่วนลดสมาชิกใหม่</span>
+                                    <span className="text-[#4ade80]">-฿{order.discount}</span>
+                                  </div>
+                                )}
                                 <div className="flex justify-between font-bold pt-1 border-t border-[#2B2B2E] mt-1">
                                   <span className="text-[#F5F5F5] text-sm">รวมทั้งสิ้น</span>
                                   <span className="text-[#D32F3A]">฿{order.total.toLocaleString()}</span>
