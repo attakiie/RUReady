@@ -3,7 +3,9 @@
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
-import { ArrowLeft, Package, Loader2 } from "lucide-react";
+import { ArrowLeft, Package, Loader2, Truck } from "lucide-react";
+
+const LINE_OPENCHAT = "https://line.me/ti/g2/eQ6xRJ2zwfCd0W99zlxQhMGkPBi_ZqOzVylHBA?utm_source=invitation&utm_medium=link_copy&utm_campaign=default";
 import { createClient } from "@/app/lib/supabase";
 import { useLanguage } from "@/app/contexts/LanguageContext";
 
@@ -28,6 +30,7 @@ type Order = {
   shipping: number;
   total: number;
   created_at: string;
+  tracking_number?: string;
   order_items: OrderItem[];
 };
 
@@ -54,6 +57,8 @@ const copy = {
     shipping: "Shipping",
     total: "Total",
     note: "Note",
+    tracking: "Tracking Number",
+    trackingHint: "Use this number to track your parcel.",
     contact: "Questions? Contact us on LINE",
     shopMore: "Continue Shopping",
     notFound: "Order not found",
@@ -69,6 +74,8 @@ const copy = {
     shipping: "ค่าจัดส่ง",
     total: "ยอดรวมทั้งสิ้น",
     note: "หมายเหตุ",
+    tracking: "หมายเลขพัสดุ",
+    trackingHint: "ใช้หมายเลขนี้ติดตามสถานะการจัดส่งได้เลย",
     contact: "มีคำถาม? ทักมาทาง LINE",
     shopMore: "ซื้อสินค้าต่อ",
     notFound: "ไม่พบออเดอร์",
@@ -194,6 +201,18 @@ export default function OrderDetailPage() {
           )}
         </div>
 
+        {/* Tracking number (shown only when admin has entered one) */}
+        {order.tracking_number && (
+          <div className="bg-[#1A1A1C] border border-[#5b8dee]/40 p-5 mb-6">
+            <div className="flex items-center gap-2 mb-2">
+              <Truck size={14} className="text-[#5b8dee]" />
+              <p className="text-[#5b8dee] text-[10px] font-semibold uppercase tracking-widest">{t.tracking}</p>
+            </div>
+            <p className="text-[#F5F5F5] font-mono font-bold text-lg tracking-widest">{order.tracking_number}</p>
+            <p className="text-[#555] text-xs mt-1">{t.trackingHint}</p>
+          </div>
+        )}
+
         {/* Items */}
         <div className="bg-[#1A1A1C] border border-[#2B2B2E] mb-6">
           <div className="px-5 py-3 border-b border-[#2B2B2E]">
@@ -257,7 +276,7 @@ export default function OrderDetailPage() {
             className="flex-1 flex items-center justify-center gap-2 bg-[#D32F3A] hover:bg-[#A02029] text-[#F5F5F5] text-xs font-semibold px-5 py-3 tracking-widest uppercase transition-colors">
             {t.shopMore}
           </Link>
-          <a href="https://line.me/R/ti/p/@ruready" target="_blank" rel="noopener noreferrer"
+          <a href={LINE_OPENCHAT} target="_blank" rel="noopener noreferrer"
             className="flex-1 flex items-center justify-center gap-2 border border-[#2B2B2E] hover:border-[#D32F3A] text-[#555] hover:text-[#F5F5F5] text-xs font-semibold px-5 py-3 tracking-widest uppercase transition-colors">
             {t.contact}
           </a>
