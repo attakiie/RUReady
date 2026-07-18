@@ -29,6 +29,7 @@ export default function RegisterPage() {
   const [form, setForm] = useState<Field>(INIT);
   const [showPw, setShowPw] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [googleLoading, setGoogleLoading] = useState(false);
   const [error, setError] = useState("");
   const [done, setDone] = useState(false);
 
@@ -71,6 +72,23 @@ export default function RegisterPage() {
 
     setLoading(false);
     setDone(true);
+  }
+
+  async function handleGoogleSignup() {
+    setError("");
+    setGoogleLoading(true);
+    const supabase = createClient();
+    const { error: oauthError } = await supabase.auth.signInWithOAuth({
+      provider: "google",
+      options: {
+        redirectTo: `${window.location.origin}/auth/callback`,
+      },
+    });
+    if (oauthError) {
+      setError("สมัครสมาชิกด้วย Google ไม่สำเร็จ กรุณาลองใหม่");
+      setGoogleLoading(false);
+    }
+    // On success, Supabase redirects the browser to Google — no further action needed here.
   }
 
   if (done) {
@@ -139,6 +157,28 @@ export default function RegisterPage() {
 
         <div className="bg-[#D32F3A]/10 border border-[#D32F3A]/30 px-4 py-3 mb-6 text-sm text-[#F5F5F5]">
           🎉 สมัครวันนี้ รับส่วนลด <span className="font-bold text-[#D32F3A]">฿30</span> ในบิลแรกทันที
+        </div>
+
+        <button
+          type="button"
+          onClick={handleGoogleSignup}
+          disabled={googleLoading}
+          className="w-full flex items-center justify-center gap-3 bg-[#F5F5F5] hover:bg-white disabled:opacity-50 disabled:cursor-not-allowed text-[#0F0F10] font-semibold text-sm px-6 py-3.5 transition-colors duration-200"
+        >
+          {googleLoading ? (
+            <Loader2 size={16} className="animate-spin" />
+          ) : (
+            <>
+              <GoogleIcon size={16} />
+              สมัครสมาชิกด้วย Google
+            </>
+          )}
+        </button>
+
+        <div className="flex items-center gap-4 my-6">
+          <div className="flex-1 h-px bg-[#2B2B2E]" />
+          <span className="text-[#2B2B2E] text-xs tracking-widest uppercase">หรือ</span>
+          <div className="flex-1 h-px bg-[#2B2B2E]" />
         </div>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
@@ -276,5 +316,28 @@ function Field({
       </label>
       {children}
     </div>
+  );
+}
+
+function GoogleIcon({ size = 16 }: { size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 48 48" aria-hidden="true">
+      <path
+        fill="#FFC107"
+        d="M43.6 20.5H42V20H24v8h11.3c-1.6 4.7-6.1 8-11.3 8-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.9 1.1 8 3.1l5.7-5.7C34.6 6.1 29.6 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.7-.4-3.5z"
+      />
+      <path
+        fill="#FF3D00"
+        d="M6.3 14.7l6.6 4.8C14.5 15.9 18.9 13 24 13c3.1 0 5.9 1.1 8 3.1l5.7-5.7C34.6 6.1 29.6 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"
+      />
+      <path
+        fill="#4CAF50"
+        d="M24 44c5.5 0 10.5-2.1 14.3-5.6l-6.6-5.6C29.6 34.7 27 35.6 24 35.6c-5.2 0-9.6-3.3-11.3-7.9l-6.5 5C9.6 39.6 16.3 44 24 44z"
+      />
+      <path
+        fill="#1976D2"
+        d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.1-4 5.5l6.6 5.6C41.9 35.9 44 30.4 44 24c0-1.3-.1-2.7-.4-3.5z"
+      />
+    </svg>
   );
 }
