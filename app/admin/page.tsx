@@ -6,7 +6,7 @@ import Link from "next/link";
 import {
   Loader2, RefreshCw, Package, ChevronDown, ChevronUp, LogOut,
   ShoppingBag, Plus, Pencil, Trash2, Eye, EyeOff, X, Truck, Save,
-  Check, AlertCircle, Receipt,
+  Check, AlertCircle, Receipt, TriangleAlert,
 } from "lucide-react";
 import { createClient } from "@/app/lib/supabase";
 
@@ -29,6 +29,7 @@ type Product = {
   category_id: string; images: string[]; tag: string; is_active: boolean;
 };
 type Category = { id: string; name_en: string; name_th: string; };
+type LowStockProduct = { id: string; name_en: string; name_th: string; slug: string; stock: number; price: number; };
 type AdminTab = "orders" | "products";
 
 // ─── Constants ───────────────────────────────────────────────
@@ -131,6 +132,18 @@ export default function AdminPage() {
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [togglingId, setTogglingId] = useState<string | null>(null);
 
+  // ── Low stock alert ──
+  const [lowStock, setLowStock] = useState<LowStockProduct[]>([]);
+  const [showLowStock, setShowLowStock] = useState(true);
+
+  const fetchLowStock = useCallback(async () => {
+    const supabase = createClient();
+    const { data } = await supabase
+      .from("low_stock_products")
+      .select("id, name_en, name_th, slug, stock, price");
+    setLowStock((data as LowStockProduct[]) ?? []);
+  }, []);
+
   // ── Fetch orders ──
   const fetchOrders = useCallback(async (showSpinner = false) => {
     if (showSpinner) setRefreshing(true);
@@ -165,11 +178,11 @@ export default function AdminPage() {
       const { data: profile } = await supabase
         .from("profiles").select("is_admin").eq("id", session.user.id).single();
       if (!profile?.is_admin) { setUnauthorized(true); setLoading(false); return; }
-      await fetchOrders();
+      await Promise.all([fetchOrders(), fetchLowStock()]);
       setLoading(false);
     }
     init();
-  }, [router, fetchOrders]);
+  }, [router, fetchOrders, fetchLowStock]);
 
   useEffect(() => {
     if (tab === "products" && products.length === 0) fetchProducts();
@@ -344,6 +357,36 @@ export default function AdminPage() {
             </button>
           </div>
         </div>
+
+        {/* ── Low stock alert ── */}
+        {showLowStock && lowStock.length > 0 && (
+          <div className="bg-[#f59e0b]/10 border border-[#f59e0b]/40 px-4 py-3 mb-6 flex items-start gap-3">
+            <TriangleAlert size={16} className="text-[#f59e0b] shrink-0 mt-0.5" />
+            <div className="flex-1 min-w-0">
+              <p className="text-[#f59e0b] text-xs font-semibold uppercase tracking-widest mb-1.5">
+                สินค้าใกล้หมด ({lowStock.length})
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {lowStock.map((p) => (
+                  <button
+                    key={p.id}
+                    onClick={() => setTab("products")}
+                    className="text-xs bg-[#0F0F10] border border-[#2B2B2E] hover:border-[#f59e0b] text-[#A5A5A5] hover:text-[#f59e0b] px-2.5 py-1 transition-colors"
+                  >
+                    {p.name_th} — เหลือ {p.stock}
+                  </button>
+                ))}
+              </div>
+            </div>
+            <button
+              onClick={() => setShowLowStock(false)}
+              className="text-[#555] hover:text-[#F5F5F5] transition-colors shrink-0"
+              title="ซ่อน"
+            >
+              <X size={14} />
+            </button>
+          </div>
+        )}
 
         {/* ── Tabs ── */}
         <div className="flex border-b border-[#2B2B2E] mb-8">
