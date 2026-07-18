@@ -6,7 +6,7 @@ import Link from "next/link";
 import {
   Loader2, RefreshCw, Package, ChevronDown, ChevronUp, LogOut,
   ShoppingBag, Plus, Pencil, Trash2, Eye, EyeOff, X, Truck, Save,
-  Check, AlertCircle,
+  Check, AlertCircle, Receipt,
 } from "lucide-react";
 import { createClient } from "@/app/lib/supabase";
 
@@ -21,7 +21,7 @@ type Order = {
   address: string; note: string; subtotal: number; shipping: number;
   discount?: number;
   total: number; created_at: string; user_id: string | null;
-  tracking_number?: string; order_items: OrderItem[];
+  tracking_number?: string; payment_slip_path?: string | null; order_items: OrderItem[];
 };
 type Product = {
   id: string; slug: string; name_en: string; name_th: string;
@@ -48,6 +48,49 @@ const EMPTY_FORM = {
   slug: "", name_en: "", name_th: "", desc_en: "", desc_th: "",
   price: "", stock: "", category_id: "", images_raw: "", tag: "", is_active: true,
 };
+
+// ─── Payment slip viewer ─────────────────────────────────────
+
+function PaymentSlip({ path }: { path: string }) {
+  const [url, setUrl] = useState<string | null>(null);
+  const [error, setError] = useState(false);
+
+  useEffect(() => {
+    let active = true;
+    async function load() {
+      const supabase = createClient();
+      const { data, error: signError } = await supabase.storage
+        .from("payment-slips")
+        .createSignedUrl(path, 3600);
+      if (!active) return;
+      if (signError || !data) { setError(true); return; }
+      setUrl(data.signedUrl);
+    }
+    load();
+    return () => { active = false; };
+  }, [path]);
+
+  return (
+    <div>
+      <p className="text-[#D32F3A] text-[10px] font-semibold uppercase tracking-widest mb-2">
+        หลักฐานการโอนเงิน
+      </p>
+      {error ? (
+        <p className="text-[#555] text-xs">โหลดรูปสลิปไม่สำเร็จ</p>
+      ) : url ? (
+        <a href={url} target="_blank" rel="noopener noreferrer" className="inline-block">
+          <img
+            src={url}
+            alt="สลิปการโอนเงิน"
+            className="max-h-48 border border-[#2B2B2E] hover:border-[#D32F3A] transition-colors"
+          />
+        </a>
+      ) : (
+        <Loader2 size={14} className="text-[#555] animate-spin" />
+      )}
+    </div>
+  );
+}
 
 function toSlug(s: string) {
   return s.toLowerCase().replace(/[^\w\s-]/g, "").replace(/[\s_]+/g, "-").replace(/^-+|-+$/g, "");
@@ -483,6 +526,19 @@ export default function AdminPage() {
                               ))}
                             </div>
                           </div>
+
+                          {/* Payment slip */}
+                          {order.payment_slip_path ? (
+                            <PaymentSlip path={order.payment_slip_path} />
+                          ) : (
+                            <div>
+                              <p className="text-[#D32F3A] text-[10px] font-semibold uppercase tracking-widest mb-2">
+                                <Receipt size={10} className="inline mr-1" />
+                                หลักฐานการโอนเงิน
+                              </p>
+                              <p className="text-[#555] text-xs">ลูกค้ายังไม่ได้แนบสลิป</p>
+                            </div>
+                          )}
 
                           {/* Tracking number */}
                           <div>
