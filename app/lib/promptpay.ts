@@ -30,9 +30,9 @@ export function buildPromptPayPayload(phone: string, amount?: number): string {
   const merchantInfo =
     tlv("00", "A000000677010111") + tlv("01", normalized);
 
-  let payload =
+  const payload =
     tlv("00", "01") +       // Payload format indicator
-    tlv("01", "12") +       // Dynamic QR
+    tlv("01", amount != null ? "12" : "11") + // Dynamic QR if amount is fixed, static otherwise
     tlv("29", merchantInfo) + // Merchant account info
     tlv("53", "764") +      // THB
     (amount != null ? tlv("54", amount.toFixed(2)) : "") +

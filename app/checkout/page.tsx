@@ -106,7 +106,6 @@ export default function CheckoutPage() {
   const [savedAddresses, setSavedAddresses] = useState<SavedAddress[]>([]);
   const [selectedAddrId, setSelectedAddrId] = useState<string | "new">("new");
   const [addrDropdownOpen, setAddrDropdownOpen] = useState(false);
-  const [userId, setUserId] = useState<string | null>(null);
   const { isFirstOrder } = useFirstOrderEligibility();
 
   const NEW_MEMBER_DISCOUNT = 30;
@@ -122,7 +121,6 @@ export default function CheckoutPage() {
       const supabase = createClient();
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return;
-      setUserId(user.id);
 
       // Load saved addresses
       const { data: addrs } = await supabase

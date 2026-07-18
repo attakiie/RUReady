@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { Eye, EyeOff, ArrowRight, Loader2 } from "lucide-react";
 import { createClient } from "@/app/lib/supabase";
 
@@ -25,7 +24,6 @@ const INIT: Field = {
 };
 
 export default function RegisterPage() {
-  const router = useRouter();
   const [form, setForm] = useState<Field>(INIT);
   const [showPw, setShowPw] = useState(false);
   const [loading, setLoading] = useState(false);

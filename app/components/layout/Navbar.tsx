@@ -41,6 +41,12 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  async function fetchProfile(userId: string) {
+    const supabase = createClient();
+    const { data } = await supabase.from("profiles").select("first_name").eq("id", userId).single();
+    if (data?.first_name) setFirstName(data.first_name);
+  }
+
   useEffect(() => {
     const supabase = createClient();
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -54,12 +60,6 @@ export default function Navbar() {
     });
     return () => subscription.unsubscribe();
   }, []);
-
-  async function fetchProfile(userId: string) {
-    const supabase = createClient();
-    const { data } = await supabase.from("profiles").select("first_name").eq("id", userId).single();
-    if (data?.first_name) setFirstName(data.first_name);
-  }
 
   async function handleLogout() {
     const supabase = createClient();

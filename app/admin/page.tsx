@@ -136,6 +136,13 @@ export default function AdminPage() {
   const [lowStock, setLowStock] = useState<LowStockProduct[]>([]);
   const [showLowStock, setShowLowStock] = useState(true);
 
+  // ── Action errors (failed writes shown to admin instead of silently ignored) ──
+  const [actionError, setActionError] = useState<string | null>(null);
+  function flashError(msg: string) {
+    setActionError(msg);
+    setTimeout(() => setActionError(null), 4000);
+  }
+
   const fetchLowStock = useCallback(async () => {
     const supabase = createClient();
     const { data } = await supabase
@@ -184,26 +191,35 @@ export default function AdminPage() {
     init();
   }, [router, fetchOrders, fetchLowStock]);
 
-  useEffect(() => {
-    if (tab === "products" && products.length === 0) fetchProducts();
-  }, [tab, products.length, fetchProducts]);
+  function switchTab(next: AdminTab) {
+    setTab(next);
+    if (next === "products" && products.length === 0) fetchProducts();
+  }
 
   // ── Order actions ──
   async function updateStatus(orderId: string, newStatus: Status) {
     setUpdatingId(orderId);
     const supabase = createClient();
-    await supabase.from("orders").update({ status: newStatus }).eq("id", orderId);
-    setOrders((prev) => prev.map((o) => o.id === orderId ? { ...o, status: newStatus } : o));
+    const { error } = await supabase.from("orders").update({ status: newStatus }).eq("id", orderId);
     setUpdatingId(null);
+    if (error) {
+      flashError("อัปเดตสถานะไม่สำเร็จ กรุณาลองใหม่ (ยอดในหน้านี้ยังไม่เปลี่ยน)");
+      return;
+    }
+    setOrders((prev) => prev.map((o) => o.id === orderId ? { ...o, status: newStatus } : o));
   }
 
   async function saveTracking(orderId: string) {
     setTrackingSaving(orderId);
     const tracking = trackingInputs[orderId] ?? "";
     const supabase = createClient();
-    await supabase.from("orders").update({ tracking_number: tracking }).eq("id", orderId);
-    setOrders((prev) => prev.map((o) => o.id === orderId ? { ...o, tracking_number: tracking } : o));
+    const { error } = await supabase.from("orders").update({ tracking_number: tracking }).eq("id", orderId);
     setTrackingSaving(null);
+    if (error) {
+      flashError("บันทึกเลขพัสดุไม่สำเร็จ กรุณาลองใหม่");
+      return;
+    }
+    setOrders((prev) => prev.map((o) => o.id === orderId ? { ...o, tracking_number: tracking } : o));
     setTrackingSaved(orderId);
     setTimeout(() => setTrackingSaved(null), 2000);
   }
@@ -292,17 +308,25 @@ export default function AdminPage() {
     if (!confirm("ลบสินค้านี้? ไม่สามารถย้อนกลับได้")) return;
     setDeletingId(id);
     const supabase = createClient();
-    await supabase.from("products").delete().eq("id", id);
-    setProducts((prev) => prev.filter((p) => p.id !== id));
+    const { error } = await supabase.from("products").delete().eq("id", id);
     setDeletingId(null);
+    if (error) {
+      flashError("ลบสินค้าไม่สำเร็จ กรุณาลองใหม่");
+      return;
+    }
+    setProducts((prev) => prev.filter((p) => p.id !== id));
   }
 
   async function toggleActive(p: Product) {
     setTogglingId(p.id);
     const supabase = createClient();
-    await supabase.from("products").update({ is_active: !p.is_active }).eq("id", p.id);
-    setProducts((prev) => prev.map((x) => x.id === p.id ? { ...x, is_active: !x.is_active } : x));
+    const { error } = await supabase.from("products").update({ is_active: !p.is_active }).eq("id", p.id);
     setTogglingId(null);
+    if (error) {
+      flashError("เปลี่ยนสถานะสินค้าไม่สำเร็จ กรุณาลองใหม่");
+      return;
+    }
+    setProducts((prev) => prev.map((x) => x.id === p.id ? { ...x, is_active: !x.is_active } : x));
   }
 
   async function handleLogout() {
@@ -358,6 +382,14 @@ export default function AdminPage() {
           </div>
         </div>
 
+        {/* ── Action error banner ── */}
+        {actionError && (
+          <div className="bg-[#D32F3A]/10 border border-[#D32F3A]/40 px-4 py-3 mb-6 flex items-center gap-3">
+            <AlertCircle size={16} className="text-[#D32F3A] shrink-0" />
+            <p className="text-[#D32F3A] text-xs font-semibold">{actionError}</p>
+          </div>
+        )}
+
         {/* ── Low stock alert ── */}
         {showLowStock && lowStock.length > 0 && (
           <div className="bg-[#f59e0b]/10 border border-[#f59e0b]/40 px-4 py-3 mb-6 flex items-start gap-3">
@@ -370,7 +402,7 @@ export default function AdminPage() {
                 {lowStock.map((p) => (
                   <button
                     key={p.id}
-                    onClick={() => setTab("products")}
+                    onClick={() => switchTab("products")}
                     className="text-xs bg-[#0F0F10] border border-[#2B2B2E] hover:border-[#f59e0b] text-[#A5A5A5] hover:text-[#f59e0b] px-2.5 py-1 transition-colors"
                   >
                     {p.name_th} — เหลือ {p.stock}
@@ -394,7 +426,7 @@ export default function AdminPage() {
             { key: "orders" as AdminTab, label: "ออเดอร์", icon: <Package size={14} />, count: orders.length },
             { key: "products" as AdminTab, label: "สินค้า", icon: <ShoppingBag size={14} />, count: products.length },
           ] as const).map((t) => (
-            <button key={t.key} onClick={() => setTab(t.key)}
+            <button key={t.key} onClick={() => switchTab(t.key)}
               className={`flex items-center gap-2 px-5 py-3 text-xs font-semibold tracking-widest uppercase border-b-2 -mb-px transition-colors ${
                 tab === t.key ? "border-[#D32F3A] text-[#F5F5F5]" : "border-transparent text-[#555] hover:text-[#A5A5A5]"
               }`}>
