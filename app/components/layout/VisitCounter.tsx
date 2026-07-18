@@ -54,11 +54,32 @@ export default function VisitCounter() {
     };
   }, []);
 
-  if (count == null) return null;
+  const digits = String(count ?? 0).padStart(5, "0").slice(-5);
 
   return (
-    <p className="text-[#2B2B2E] text-[10px] tracking-widest uppercase font-mono">
-      Shooter Visits: {count.toLocaleString()}
-    </p>
+    <div className="flex flex-col items-center gap-1.5">
+      <span className="text-[#555] text-[9px] font-semibold tracking-[0.2em] uppercase">
+        Shooter Visits
+      </span>
+      <div className="flex items-center gap-2 bg-black border border-[#2B2B2E] rounded px-3 py-1.5 shadow-inner">
+        <span
+          className="w-1.5 h-1.5 rounded-full bg-[#ff2d2d] animate-pulse shrink-0"
+          style={{ boxShadow: "0 0 6px 1px rgba(255,45,45,0.85)" }}
+          aria-hidden="true"
+        />
+        <div className="relative font-mono text-lg leading-none tracking-[0.15em]">
+          {/* unlit LED segments — gives the digits a real display housing feel */}
+          <span className="text-[#2a0808] select-none" aria-hidden="true">
+            88888
+          </span>
+          <span
+            className="absolute inset-0 text-[#ff3333]"
+            style={{ textShadow: "0 0 4px rgba(255,51,51,0.9), 0 0 12px rgba(255,51,51,0.5)" }}
+          >
+            {count == null ? "" : digits}
+          </span>
+        </div>
+      </div>
+    </div>
   );
 }
