@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useLanguage } from "@/app/contexts/LanguageContext";
+import VisitCounter from "./VisitCounter";
 
 const copy = {
   en: {
@@ -139,6 +140,7 @@ export default function Footer() {
           <p className="text-[#A5A5A5] text-xs">
             © {new Date().getFullYear()} R U READY. {t.rights}
           </p>
+          <VisitCounter />
           <p className="text-[#2B2B2E] text-xs tracking-widest uppercase">
             {t.tagline2}
           </p>
