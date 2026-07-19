@@ -88,7 +88,7 @@ export default function FeaturedProducts() {
             </p>
             <h2
               className="text-[clamp(40px,6vw,72px)] leading-none font-display text-[#F5F5F5]"
-              style={{ fontFamily: "'Bebas Neue', sans-serif" }}
+              style={{ fontFamily: "'Bebas Neue', 'Kanit', sans-serif" }}
             >
               {t.heading}
             </h2>

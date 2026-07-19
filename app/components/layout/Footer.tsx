@@ -72,7 +72,7 @@ export default function Footer() {
           <div className="col-span-2 md:col-span-1">
             <div
               className="text-2xl font-display text-[#F5F5F5] tracking-widest mb-3"
-              style={{ fontFamily: "'Bebas Neue', sans-serif" }}
+              style={{ fontFamily: "'Bebas Neue', 'Kanit', sans-serif" }}
             >
               R U READY
             </div>

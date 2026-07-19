@@ -100,7 +100,7 @@ export default function RegisterPage() {
           </div>
           <h2
             className="text-[48px] leading-none text-[#F5F5F5] mb-4"
-            style={{ fontFamily: "'Bebas Neue', sans-serif" }}
+            style={{ fontFamily: "'Bebas Neue', 'Kanit', sans-serif" }}
           >
             READY.
           </h2>
@@ -133,7 +133,7 @@ export default function RegisterPage() {
           >
             <span
               className="text-2xl text-[#F5F5F5] tracking-widest group-hover:text-[#D32F3A] transition-colors"
-              style={{ fontFamily: "'Bebas Neue', sans-serif" }}
+              style={{ fontFamily: "'Bebas Neue', 'Kanit', sans-serif" }}
             >
               R U READY
             </span>
@@ -141,7 +141,7 @@ export default function RegisterPage() {
           </Link>
           <h1
             className="text-[clamp(36px,8vw,56px)] leading-none text-[#F5F5F5] mt-4"
-            style={{ fontFamily: "'Bebas Neue', sans-serif" }}
+            style={{ fontFamily: "'Bebas Neue', 'Kanit', sans-serif" }}
           >
             สมัครสมาชิก
           </h1>

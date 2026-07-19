@@ -344,7 +344,7 @@ export default function AdminPage() {
 
   if (unauthorized) return (
     <div className="min-h-screen bg-[#0F0F10] flex flex-col items-center justify-center gap-4 text-center px-4">
-      <p className="text-[#D32F3A] text-4xl font-bold" style={{ fontFamily: "'Bebas Neue', sans-serif" }}>ACCESS DENIED</p>
+      <p className="text-[#D32F3A] text-4xl font-bold" style={{ fontFamily: "'Bebas Neue', 'Kanit', sans-serif" }}>ACCESS DENIED</p>
       <p className="text-[#555] text-sm max-w-xs">คุณไม่มีสิทธิ์เข้าหน้านี้</p>
       <Link href="/" className="text-[#D32F3A] text-xs uppercase tracking-widest underline">กลับหน้าแรก</Link>
     </div>
@@ -364,7 +364,7 @@ export default function AdminPage() {
               ← R U READY
             </Link>
             <h1 className="text-[clamp(36px,6vw,60px)] leading-none text-[#F5F5F5]"
-              style={{ fontFamily: "'Bebas Neue', sans-serif" }}>
+              style={{ fontFamily: "'Bebas Neue', 'Kanit', sans-serif" }}>
               ADMIN
             </h1>
           </div>

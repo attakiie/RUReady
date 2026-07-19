@@ -217,10 +217,10 @@ export default function AccountPage() {
         <div className="mb-8 flex items-start justify-between">
           <div>
             <Link href="/" className="inline-flex items-center gap-2 group mb-3">
-              <span className="text-xl text-[#F5F5F5] tracking-widest group-hover:text-[#D32F3A] transition-colors" style={{ fontFamily: "'Bebas Neue', sans-serif" }}>R U READY</span>
+              <span className="text-xl text-[#F5F5F5] tracking-widest group-hover:text-[#D32F3A] transition-colors" style={{ fontFamily: "'Bebas Neue', 'Kanit', sans-serif" }}>R U READY</span>
               <span className="w-1.5 h-1.5 rounded-full bg-[#D32F3A]" />
             </Link>
-            <h1 className="text-[clamp(36px,8vw,56px)] leading-none text-[#F5F5F5]" style={{ fontFamily: "'Bebas Neue', sans-serif" }}>บัญชีของฉัน</h1>
+            <h1 className="text-[clamp(36px,8vw,56px)] leading-none text-[#F5F5F5]" style={{ fontFamily: "'Bebas Neue', 'Kanit', sans-serif" }}>บัญชีของฉัน</h1>
             <p className="text-[#A5A5A5] text-sm mt-1">{profile.email}</p>
           </div>
           <div className="w-12 h-12 rounded-full bg-[#D32F3A] flex items-center justify-center mt-6 shrink-0">

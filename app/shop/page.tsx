@@ -222,7 +222,7 @@ export default function ShopPage() {
           </p>
           <h1
             className="text-[clamp(48px,8vw,80px)] leading-none text-[#F5F5F5]"
-            style={{ fontFamily: "'Bebas Neue', sans-serif" }}
+            style={{ fontFamily: "'Bebas Neue', 'Kanit', sans-serif" }}
           >
             {t.title}
           </h1>

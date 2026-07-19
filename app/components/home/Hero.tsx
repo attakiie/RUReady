@@ -147,7 +147,7 @@ export default function Hero() {
             {/* Main headline */}
             <h1
               className="text-[clamp(52px,10vw,120px)] leading-[0.92] font-display text-[#F5F5F5] mb-4 lg:mb-6"
-              style={{ fontFamily: "'Bebas Neue', sans-serif" }}
+              style={{ fontFamily: "'Bebas Neue', 'Kanit', sans-serif" }}
             >
               ARE YOU
               <br />
@@ -258,7 +258,7 @@ function Stat({ value, label }: { value: string; label: string }) {
     <div>
       <div
         className="text-2xl text-[#F5F5F5] font-display"
-        style={{ fontFamily: "'Bebas Neue', sans-serif" }}
+        style={{ fontFamily: "'Bebas Neue', 'Kanit', sans-serif" }}
       >
         {value}
       </div>

@@ -99,7 +99,7 @@ function SuccessContent() {
 
         {/* Heading */}
         <h1 className="text-[clamp(48px,10vw,80px)] leading-none text-[#F5F5F5] mb-4"
-          style={{ fontFamily: "'Bebas Neue', sans-serif" }}>
+          style={{ fontFamily: "'Bebas Neue', 'Kanit', sans-serif" }}>
           {t.heading}
         </h1>
         <p className="text-[#A5A5A5] mb-8">{t.sub}</p>

@@ -66,7 +66,7 @@ export default function Categories() {
             </p>
             <h2
               className="text-[clamp(40px,6vw,72px)] leading-none font-display text-[#F5F5F5]"
-              style={{ fontFamily: "'Bebas Neue', sans-serif" }}
+              style={{ fontFamily: "'Bebas Neue', 'Kanit', sans-serif" }}
             >
               {t.heading}
             </h2>
@@ -106,7 +106,7 @@ export default function Categories() {
                 <div>
                   <h3
                     className="text-[22px] sm:text-[28px] leading-none font-display text-[#F5F5F5] mb-2 group-hover:text-[#D32F3A] transition-colors duration-200"
-                    style={{ fontFamily: "'Bebas Neue', sans-serif" }}
+                    style={{ fontFamily: "'Bebas Neue', 'Kanit', sans-serif" }}
                   >
                     {cat.label}
                   </h3>

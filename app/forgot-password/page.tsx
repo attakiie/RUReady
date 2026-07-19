@@ -39,7 +39,7 @@ export default function ForgotPasswordPage() {
           </div>
           <h2
             className="text-[48px] leading-none text-[#F5F5F5] mb-4"
-            style={{ fontFamily: "'Bebas Neue', sans-serif" }}
+            style={{ fontFamily: "'Bebas Neue', 'Kanit', sans-serif" }}
           >
             ส่งลิงก์แล้ว
           </h2>
@@ -71,7 +71,7 @@ export default function ForgotPasswordPage() {
           <Link href="/" className="inline-flex items-center gap-2 group">
             <span
               className="text-2xl text-[#F5F5F5] tracking-widest group-hover:text-[#D32F3A] transition-colors"
-              style={{ fontFamily: "'Bebas Neue', sans-serif" }}
+              style={{ fontFamily: "'Bebas Neue', 'Kanit', sans-serif" }}
             >
               R U READY
             </span>
@@ -79,7 +79,7 @@ export default function ForgotPasswordPage() {
           </Link>
           <h1
             className="text-[clamp(32px,7vw,48px)] leading-none text-[#F5F5F5] mt-4"
-            style={{ fontFamily: "'Bebas Neue', sans-serif" }}
+            style={{ fontFamily: "'Bebas Neue', 'Kanit', sans-serif" }}
           >
             ลืมรหัสผ่าน
           </h1>

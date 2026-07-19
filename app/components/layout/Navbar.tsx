@@ -90,7 +90,7 @@ export default function Navbar() {
             <Link href="/" className="group flex items-center gap-2" onClick={close}>
               <span
                 className="font-display text-2xl text-[#F5F5F5] tracking-widest group-hover:text-[#D32F3A] transition-colors duration-200"
-                style={{ fontFamily: "'Bebas Neue', sans-serif" }}
+                style={{ fontFamily: "'Bebas Neue', 'Kanit', sans-serif" }}
               >
                 R U READY
               </span>
@@ -198,7 +198,7 @@ export default function Navbar() {
         >
           {/* Panel header */}
           <div className="flex items-center justify-between px-6 pt-5 pb-5 border-b border-[#2B2B2E]">
-            <span className="text-[#F5F5F5] text-xl tracking-widest" style={{ fontFamily: "'Bebas Neue', sans-serif" }}>
+            <span className="text-[#F5F5F5] text-xl tracking-widest" style={{ fontFamily: "'Bebas Neue', 'Kanit', sans-serif" }}>
               MENU
             </span>
             <button onClick={close} className="text-[#555] hover:text-[#F5F5F5] transition-colors p-1">

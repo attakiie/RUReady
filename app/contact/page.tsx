@@ -83,7 +83,7 @@ export default function ContactPage() {
         </Link>
 
         <p className="text-[#D32F3A] text-xs font-semibold tracking-[0.2em] uppercase mb-2">{t.eyebrow}</p>
-        <h1 className="text-[clamp(48px,8vw,80px)] leading-none text-[#F5F5F5] mb-4" style={{ fontFamily: "'Bebas Neue', sans-serif" }}>
+        <h1 className="text-[clamp(48px,8vw,80px)] leading-none text-[#F5F5F5] mb-4" style={{ fontFamily: "'Bebas Neue', 'Kanit', sans-serif" }}>
           {t.title}
         </h1>
         <p className="text-[#A5A5A5] text-sm mb-12">{t.sub}</p>

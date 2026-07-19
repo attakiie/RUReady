@@ -88,7 +88,7 @@ export default function ResetPasswordPage() {
         >
           <span
             className="text-2xl text-[#F5F5F5] tracking-widest group-hover:text-[#D32F3A] transition-colors"
-            style={{ fontFamily: "'Bebas Neue', sans-serif" }}
+            style={{ fontFamily: "'Bebas Neue', 'Kanit', sans-serif" }}
           >
             R U READY
           </span>
@@ -100,7 +100,7 @@ export default function ResetPasswordPage() {
         </p>
         <h1
           className="text-[clamp(36px,8vw,52px)] leading-none text-[#F5F5F5] mb-10 whitespace-pre-line"
-          style={{ fontFamily: "'Bebas Neue', sans-serif" }}
+          style={{ fontFamily: "'Bebas Neue', 'Kanit', sans-serif" }}
         >
           {t.title}
         </h1>

@@ -36,7 +36,7 @@ export default function CTABanner() {
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <h2
           className="text-[clamp(48px,8vw,110px)] leading-none font-display text-[#F5F5F5] mb-8 whitespace-pre-line"
-          style={{ fontFamily: "'Bebas Neue', sans-serif" }}
+          style={{ fontFamily: "'Bebas Neue', 'Kanit', sans-serif" }}
         >
           {t.heading}
         </h2>

@@ -169,7 +169,7 @@ export default function ProductPage() {
 
             <h1
               className="text-[clamp(32px,5vw,56px)] leading-none text-[#F5F5F5] mb-6"
-              style={{ fontFamily: "'Bebas Neue', sans-serif" }}
+              style={{ fontFamily: "'Bebas Neue', 'Kanit', sans-serif" }}
             >
               {name}
             </h1>

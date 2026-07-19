@@ -66,7 +66,7 @@ export default function AboutPage() {
             </p>
             <h1
               className="text-[clamp(48px,9vw,96px)] leading-[0.9] text-[#F5F5F5] mb-8 whitespace-pre-line"
-              style={{ fontFamily: "'Bebas Neue', sans-serif" }}
+              style={{ fontFamily: "'Bebas Neue', 'Kanit', sans-serif" }}
             >
               {t.heading}
             </h1>
@@ -100,7 +100,7 @@ export default function AboutPage() {
                     <Icon size={28} className="text-[#D32F3A] mb-5" strokeWidth={1.5} />
                     <h3
                       className="text-2xl text-[#F5F5F5] mb-3"
-                      style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: "0.05em" }}
+                      style={{ fontFamily: "'Bebas Neue', 'Kanit', sans-serif", letterSpacing: "0.05em" }}
                     >
                       {pillar.title}
                     </h3>

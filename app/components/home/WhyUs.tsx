@@ -42,7 +42,7 @@ export default function WhyUs() {
           </p>
           <h2
             className="text-[clamp(40px,6vw,72px)] leading-none font-display text-[#F5F5F5]"
-            style={{ fontFamily: "'Bebas Neue', sans-serif" }}
+            style={{ fontFamily: "'Bebas Neue', 'Kanit', sans-serif" }}
           >
             {t.heading}
           </h2>
@@ -58,7 +58,7 @@ export default function WhyUs() {
                 {/* Number */}
                 <div
                   className="text-[#2B2B2E] text-[52px] sm:text-[80px] leading-none font-display mb-3 sm:mb-4 select-none"
-                  style={{ fontFamily: "'Bebas Neue', sans-serif" }}
+                  style={{ fontFamily: "'Bebas Neue', 'Kanit', sans-serif" }}
                   aria-hidden
                 >
                   0{i + 1}

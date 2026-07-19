@@ -87,7 +87,7 @@ export default function CartDrawer() {
             <ShoppingBag size={18} className="text-[#D32F3A]" />
             <span
               className="text-xl text-[#F5F5F5]"
-              style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: "0.1em" }}
+              style={{ fontFamily: "'Bebas Neue', 'Kanit', sans-serif", letterSpacing: "0.1em" }}
             >
               {t.title}
             </span>

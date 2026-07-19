@@ -69,7 +69,7 @@ export default function LoginPage() {
           <Link href="/" className="inline-flex items-center gap-2 group">
             <span
               className="text-2xl text-[#F5F5F5] tracking-widest group-hover:text-[#D32F3A] transition-colors"
-              style={{ fontFamily: "'Bebas Neue', sans-serif" }}
+              style={{ fontFamily: "'Bebas Neue', 'Kanit', sans-serif" }}
             >
               R U READY
             </span>
@@ -77,7 +77,7 @@ export default function LoginPage() {
           </Link>
           <h1
             className="text-[clamp(36px,8vw,56px)] leading-none text-[#F5F5F5] mt-4"
-            style={{ fontFamily: "'Bebas Neue', sans-serif" }}
+            style={{ fontFamily: "'Bebas Neue', 'Kanit', sans-serif" }}
           >
             เข้าสู่ระบบ
           </h1>

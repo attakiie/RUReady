@@ -11,8 +11,8 @@
   --color-secondary: #A5A5A5;
 
   /* Fonts */
-  --font-display: 'Bebas Neue', sans-serif;
-  --font-body: 'Inter', system-ui, sans-serif;
+  --font-display: 'Bebas Neue', 'Kanit', sans-serif;
+  --font-body: 'Inter', 'Kanit', system-ui, sans-serif;
 }
 
 :root {
@@ -31,14 +31,14 @@ html {
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: 'Inter', system-ui, sans-serif;
+  font-family: 'Inter', 'Kanit', system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Bebas Neue for headlines */
+/* Bebas Neue for Latin headlines, Kanit picks up Thai characters that Bebas Neue lacks */
 .font-display {
-  font-family: 'Bebas Neue', sans-serif;
+  font-family: 'Bebas Neue', 'Kanit', sans-serif;
   letter-spacing: 0.02em;
 }
 

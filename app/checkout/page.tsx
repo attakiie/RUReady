@@ -257,7 +257,7 @@ export default function CheckoutPage() {
             <ArrowLeft size={12} /> {lang === "th" ? "กลับไปร้านค้า" : "Back to Shop"}
           </Link>
           <h1 className="text-[clamp(40px,7vw,72px)] leading-none text-[#F5F5F5]"
-            style={{ fontFamily: "'Bebas Neue', sans-serif" }}>
+            style={{ fontFamily: "'Bebas Neue', 'Kanit', sans-serif" }}>
             {t.title}
           </h1>
         </div>

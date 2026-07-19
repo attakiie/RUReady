@@ -152,7 +152,7 @@ export default function OrderDetailPage() {
         <div className="mb-8">
           <p className="text-[#555] text-xs uppercase tracking-widest mb-1">{t.order}</p>
           <h1 className="text-[clamp(32px,6vw,52px)] leading-none text-[#F5F5F5] mb-1"
-            style={{ fontFamily: "'Bebas Neue', sans-serif" }}>
+            style={{ fontFamily: "'Bebas Neue', 'Kanit', sans-serif" }}>
             #{shortId}
           </h1>
           <p className="text-[#555] text-xs">

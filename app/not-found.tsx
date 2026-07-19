@@ -11,7 +11,7 @@ export default function NotFound() {
         <div className="relative mb-8">
           <span
             className="text-[180px] leading-none font-display text-[#1A1A1C] select-none"
-            style={{ fontFamily: "'Bebas Neue', sans-serif" }}
+            style={{ fontFamily: "'Bebas Neue', 'Kanit', sans-serif" }}
             aria-hidden
           >
             404
@@ -19,7 +19,7 @@ export default function NotFound() {
           <div className="absolute inset-0 flex items-center justify-center">
             <span
               className="text-[clamp(32px,6vw,56px)] leading-none text-[#D32F3A]"
-              style={{ fontFamily: "'Bebas Neue', sans-serif" }}
+              style={{ fontFamily: "'Bebas Neue', 'Kanit', sans-serif" }}
             >
               MISS.
             </span>

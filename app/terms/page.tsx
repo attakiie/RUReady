@@ -98,7 +98,7 @@ export default function TermsPage() {
           </p>
           <h1
             className="text-[clamp(40px,8vw,72px)] leading-none text-[#F5F5F5] mb-4"
-            style={{ fontFamily: "'Bebas Neue', sans-serif" }}
+            style={{ fontFamily: "'Bebas Neue', 'Kanit', sans-serif" }}
           >
             ข้อกำหนด & ความเป็นส่วนตัว
           </h1>
@@ -127,7 +127,7 @@ export default function TermsPage() {
               <div className="border-l-2 border-[#D32F3A] pl-5 mb-8">
                 <h2
                   className="text-[clamp(28px,5vw,40px)] leading-none text-[#F5F5F5] mb-1"
-                  style={{ fontFamily: "'Bebas Neue', sans-serif" }}
+                  style={{ fontFamily: "'Bebas Neue', 'Kanit', sans-serif" }}
                 >
                   {section.title}
                 </h2>
