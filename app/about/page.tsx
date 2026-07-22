@@ -26,6 +26,9 @@ const copy = {
     location: "Bangkok, Thailand",
     locationSub: "Shipping nationwide",
     shopCta: "Shop Now",
+    sponsorLabel: "Channel We Sponsor",
+    sponsorDesc: "Follow real range footage and match stages from attakiie_airsoft — proudly sponsored by R U READY.",
+    sponsorHandle: "@attakiie_airsoft",
   },
   th: {
     eyebrow: "เกี่ยวกับเรา",
@@ -47,8 +50,29 @@ const copy = {
     location: "กรุงเทพมหานคร, ประเทศไทย",
     locationSub: "จัดส่งทั่วประเทศ",
     shopCta: "ไปร้านค้า",
+    sponsorLabel: "ช่องที่เราสนับสนุน",
+    sponsorDesc: "ติดตามคลิปยิงปืนจากสนามจริง ผ่านช่อง attakiie_airsoft ที่ R U READY ภูมิใจสนับสนุน",
+    sponsorHandle: "@attakiie_airsoft",
   },
 };
+
+const SPONSOR_CHANNELS = [
+  {
+    label: "Facebook",
+    href: "https://www.facebook.com/attakiieairsoft",
+    color: "#1877F2",
+  },
+  {
+    label: "TikTok",
+    href: "https://www.tiktok.com/@attakiie_airsoft",
+    color: "#F5F5F5",
+  },
+  {
+    label: "YouTube",
+    href: "https://www.youtube.com/@attakiie_airsoft",
+    color: "#FF0000",
+  },
+];
 
 export default function AboutPage() {
   const { lang } = useLanguage();
@@ -144,6 +168,30 @@ export default function AboutPage() {
             </div>
           </div>
 
+          {/* Sponsor Channel */}
+          <div className="py-16 border-b border-[#2B2B2E]">
+            <p className="text-[#D32F3A] text-xs font-semibold tracking-[0.2em] uppercase mb-3">
+              {t.sponsorLabel}
+            </p>
+            <p className="text-[#A5A5A5] text-sm mb-10 max-w-lg">{t.sponsorDesc}</p>
+
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              {SPONSOR_CHANNELS.map((channel) => (
+                <a
+                  key={channel.label}
+                  href={channel.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="bg-[#1A1A1C] border border-[#2B2B2E] hover:border-[#D32F3A] p-6 flex flex-col gap-2 transition-colors duration-200"
+                >
+                  <SponsorIcon label={channel.label} color={channel.color} />
+                  <p className="text-[#A5A5A5] text-xs uppercase tracking-widest">{channel.label}</p>
+                  <p className="text-[#F5F5F5] font-semibold">{t.sponsorHandle}</p>
+                </a>
+              ))}
+            </div>
+          </div>
+
           {/* CTA */}
           <div className="py-16 text-center">
             <Link
@@ -159,5 +207,31 @@ export default function AboutPage() {
       </div>
       <Footer />
     </>
+  );
+}
+
+function SponsorIcon({ label, color }: { label: string; color: string }) {
+  if (label === "Facebook") {
+    return (
+      <svg width="20" height="20" viewBox="0 0 24 24" fill={color}>
+        <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+      </svg>
+    );
+  }
+  if (label === "TikTok") {
+    return (
+      <svg width="20" height="20" viewBox="0 0 24 24" fill={color}>
+        <path d="M16.6 5.82s.51.5 0 0A4.278 4.278 0 0 1 15.54 3h-3.09v12.4a2.592 2.592 0 0 1-2.59 2.5c-1.42 0-2.6-1.16-2.6-2.6c0-1.72 1.66-3.01 3.37-2.48V9.66c-3.45-.46-6.47 2.22-6.47 5.64c0 3.33 2.76 5.7 5.69 5.7c3.14 0 5.69-2.55 5.69-5.7V9.01a7.35 7.35 0 0 0 4.3 1.38V7.3s-1.88.09-3.24-1.48z" />
+      </svg>
+    );
+  }
+  return (
+    <svg width="20" height="20" viewBox="0 0 24 24">
+      <path
+        fill={color}
+        d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816z"
+      />
+      <path fill="#1A1A1C" d="M9.75 15.02V8.98L15.5 12l-5.75 3.02z" />
+    </svg>
   );
 }

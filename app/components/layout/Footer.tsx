@@ -27,6 +27,7 @@ const copy = {
     lineGroup: "Join LINE Group",
     rights: "All rights reserved.",
     tagline2: "See you on the next stage.",
+    followUs: "Follow shooting clips from attakiie_airsoft",
   },
   th: {
     tagline: "อุปกรณ์สำหรับนักยิง Action Air เป็นมิตร รวดเร็ว พร้อมสำหรับสนาม",
@@ -50,8 +51,15 @@ const copy = {
     lineGroup: "เข้าร่วมกลุ่ม LINE",
     rights: "สงวนลิขสิทธิ์",
     tagline2: "แล้วพบกันในสเตจถัดไป",
+    followUs: "ติดตามคลิปยิงจาก attakiie_airsoft",
   },
 };
+
+const CREATOR_SOCIALS = [
+  { label: "Facebook", href: "https://www.facebook.com/attakiieairsoft" },
+  { label: "TikTok", href: "https://www.tiktok.com/@attakiie_airsoft" },
+  { label: "YouTube", href: "https://www.youtube.com/@attakiie_airsoft" },
+];
 
 const LINE_OPENCHAT = "https://line.me/ti/g2/eQ6xRJ2zwfCd0W99zlxQhMGkPBi_ZqOzVylHBA?utm_source=invitation&utm_medium=link_copy&utm_campaign=default";
 
@@ -92,6 +100,25 @@ export default function Footer() {
                   {s.label}
                 </a>
               ))}
+            </div>
+            {/* Creator socials (attakiie_airsoft) */}
+            <div className="mt-6">
+              <p className="text-[#555] text-[11px] tracking-widest uppercase mb-2">
+                {t.followUs}
+              </p>
+              <div className="flex gap-4">
+                {CREATOR_SOCIALS.map((s) => (
+                  <a
+                    key={s.label}
+                    href={s.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-[#A5A5A5] hover:text-[#D32F3A] text-xs tracking-wide uppercase transition-colors duration-200"
+                  >
+                    {s.label}
+                  </a>
+                ))}
+              </div>
             </div>
           </div>
 
