@@ -6,7 +6,7 @@ import Link from "next/link";
 import {
   Loader2, RefreshCw, Package, ChevronDown, ChevronUp, LogOut,
   ShoppingBag, Plus, Pencil, Trash2, Eye, EyeOff, X, Truck, Save,
-  Check, AlertCircle, Receipt, TriangleAlert,
+  Check, AlertCircle, Receipt, TriangleAlert, Ticket,
 } from "lucide-react";
 import { createClient } from "@/app/lib/supabase";
 
@@ -30,7 +30,12 @@ type Product = {
 };
 type Category = { id: string; name_en: string; name_th: string; };
 type LowStockProduct = { id: string; name_en: string; name_th: string; slug: string; stock: number; price: number; };
-type AdminTab = "orders" | "products";
+type Coupon = {
+  code: string; type: "fixed" | "percent"; value: number;
+  min_subtotal: number; max_discount: number | null; active: boolean;
+  usage_limit: number | null; used_count: number; expires_at: string | null;
+};
+type AdminTab = "orders" | "products" | "coupons";
 
 // ─── Constants ───────────────────────────────────────────────
 
@@ -132,6 +137,16 @@ export default function AdminPage() {
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [togglingId, setTogglingId] = useState<string | null>(null);
 
+  // ── Coupons state ──
+  const [coupons, setCoupons] = useState<Coupon[]>([]);
+  const [couponsLoading, setCouponsLoading] = useState(false);
+  const [couponForm, setCouponForm] = useState({
+    code: "", type: "fixed" as "fixed" | "percent", value: "",
+    min_subtotal: "", max_discount: "", usage_limit: "", expires_at: "",
+  });
+  const [couponSaving, setCouponSaving] = useState(false);
+  const [couponFormError, setCouponFormError] = useState("");
+
   // ── Low stock alert ──
   const [lowStock, setLowStock] = useState<LowStockProduct[]>([]);
   const [showLowStock, setShowLowStock] = useState(true);
@@ -191,9 +206,71 @@ export default function AdminPage() {
     init();
   }, [router, fetchOrders, fetchLowStock]);
 
+  // ── Fetch coupons ──
+  const fetchCoupons = useCallback(async () => {
+    setCouponsLoading(true);
+    const supabase = createClient();
+    const { data } = await supabase
+      .from("coupons")
+      .select("code, type, value, min_subtotal, max_discount, active, usage_limit, used_count, expires_at")
+      .order("created_at", { ascending: false });
+    setCoupons((data as Coupon[]) ?? []);
+    setCouponsLoading(false);
+  }, []);
+
   function switchTab(next: AdminTab) {
     setTab(next);
     if (next === "products" && products.length === 0) fetchProducts();
+    if (next === "coupons" && coupons.length === 0) fetchCoupons();
+  }
+
+  async function saveCoupon(e: React.FormEvent) {
+    e.preventDefault();
+    setCouponFormError("");
+    const code = couponForm.code.trim().toUpperCase();
+    const value = parseInt(couponForm.value, 10);
+    if (!code || !value || value <= 0) {
+      setCouponFormError("กรุณากรอกโค้ดและมูลค่าให้ถูกต้อง");
+      return;
+    }
+    if (couponForm.type === "percent" && value > 100) {
+      setCouponFormError("เปอร์เซ็นต์ต้องไม่เกิน 100");
+      return;
+    }
+    setCouponSaving(true);
+    const supabase = createClient();
+    const { error } = await supabase.from("coupons").insert({
+      code,
+      type: couponForm.type,
+      value,
+      min_subtotal: parseInt(couponForm.min_subtotal, 10) || 0,
+      max_discount: couponForm.max_discount ? parseInt(couponForm.max_discount, 10) : null,
+      usage_limit: couponForm.usage_limit ? parseInt(couponForm.usage_limit, 10) : null,
+      expires_at: couponForm.expires_at ? new Date(couponForm.expires_at).toISOString() : null,
+      active: true,
+    });
+    setCouponSaving(false);
+    if (error) {
+      setCouponFormError(error.message.includes("duplicate") ? "โค้ดนี้มีอยู่แล้ว" : "บันทึกไม่สำเร็จ: " + error.message);
+      return;
+    }
+    setCouponForm({ code: "", type: "fixed", value: "", min_subtotal: "", max_discount: "", usage_limit: "", expires_at: "" });
+    fetchCoupons();
+  }
+
+  async function toggleCoupon(code: string, active: boolean) {
+    const supabase = createClient();
+    const { error } = await supabase.from("coupons").update({ active: !active }).eq("code", code);
+    if (error) { flashError("อัปเดตโค้ดไม่สำเร็จ"); return; }
+    setCoupons((prev) => prev.map((c) => c.code === code ? { ...c, active: !active } : c));
+  }
+
+  async function deleteCoupon(code: string) {
+    if (!confirm(`ลบโค้ด ${code}?`)) return;
+    const supabase = createClient();
+    const { error } = await supabase.from("coupons").delete().eq("code", code);
+    if (error) { flashError("ลบโค้ดไม่สำเร็จ"); return; }
+    setCoupons((prev) => prev.filter((c) => c.code !== code));
   }
 
   // ── Order actions ──
@@ -425,6 +502,7 @@ export default function AdminPage() {
           {([
             { key: "orders" as AdminTab, label: "ออเดอร์", icon: <Package size={14} />, count: orders.length },
             { key: "products" as AdminTab, label: "สินค้า", icon: <ShoppingBag size={14} />, count: products.length },
+            { key: "coupons" as AdminTab, label: "โค้ดส่วนลด", icon: <Ticket size={14} />, count: coupons.length },
           ] as const).map((t) => (
             <button key={t.key} onClick={() => switchTab(t.key)}
               className={`flex items-center gap-2 px-5 py-3 text-xs font-semibold tracking-widest uppercase border-b-2 -mb-px transition-colors ${
@@ -880,7 +958,118 @@ export default function AdminPage() {
             </div>
           </>
         )}
+
+        {/* ════════════════════════════════════════
+            COUPONS TAB
+        ════════════════════════════════════════ */}
+        {tab === "coupons" && (
+          <>
+            {/* Create coupon form */}
+            <form onSubmit={saveCoupon} className="bg-[#1A1A1C] border border-[#2B2B2E] p-5 mb-8">
+              <h3 className="text-xs font-semibold tracking-[0.2em] uppercase text-[#D32F3A] mb-4">สร้างโค้ดใหม่</h3>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                <div className="flex flex-col gap-1.5">
+                  <label className={couponLabelCls}>โค้ด *</label>
+                  <input type="text" value={couponForm.code}
+                    onChange={(e) => setCouponForm((f) => ({ ...f, code: e.target.value.toUpperCase() }))}
+                    placeholder="WELCOME50" className={couponInputCls + " uppercase tracking-wide"} />
+                </div>
+                <div className="flex flex-col gap-1.5">
+                  <label className={couponLabelCls}>ประเภท *</label>
+                  <select value={couponForm.type}
+                    onChange={(e) => setCouponForm((f) => ({ ...f, type: e.target.value as "fixed" | "percent" }))}
+                    className={couponInputCls}>
+                    <option value="fixed">บาท (฿)</option>
+                    <option value="percent">เปอร์เซ็นต์ (%)</option>
+                  </select>
+                </div>
+                <div className="flex flex-col gap-1.5">
+                  <label className={couponLabelCls}>{couponForm.type === "percent" ? "ส่วนลด (%) *" : "ส่วนลด (฿) *"}</label>
+                  <input type="number" value={couponForm.value}
+                    onChange={(e) => setCouponForm((f) => ({ ...f, value: e.target.value }))}
+                    placeholder={couponForm.type === "percent" ? "10" : "50"} className={couponInputCls} />
+                </div>
+                <div className="flex flex-col gap-1.5">
+                  <label className={couponLabelCls}>ยอดขั้นต่ำ (฿)</label>
+                  <input type="number" value={couponForm.min_subtotal}
+                    onChange={(e) => setCouponForm((f) => ({ ...f, min_subtotal: e.target.value }))}
+                    placeholder="0" className={couponInputCls} />
+                </div>
+                {couponForm.type === "percent" && (
+                  <div className="flex flex-col gap-1.5">
+                    <label className={couponLabelCls}>เพดานส่วนลด (฿)</label>
+                    <input type="number" value={couponForm.max_discount}
+                      onChange={(e) => setCouponForm((f) => ({ ...f, max_discount: e.target.value }))}
+                      placeholder="ไม่จำกัด" className={couponInputCls} />
+                  </div>
+                )}
+                <div className="flex flex-col gap-1.5">
+                  <label className={couponLabelCls}>จำกัดจำนวนครั้ง</label>
+                  <input type="number" value={couponForm.usage_limit}
+                    onChange={(e) => setCouponForm((f) => ({ ...f, usage_limit: e.target.value }))}
+                    placeholder="ไม่จำกัด" className={couponInputCls} />
+                </div>
+                <div className="flex flex-col gap-1.5">
+                  <label className={couponLabelCls}>วันหมดอายุ</label>
+                  <input type="date" value={couponForm.expires_at}
+                    onChange={(e) => setCouponForm((f) => ({ ...f, expires_at: e.target.value }))}
+                    className={couponInputCls} />
+                </div>
+              </div>
+              {couponFormError && <p className="text-[#D32F3A] text-xs mt-3">{couponFormError}</p>}
+              <button type="submit" disabled={couponSaving}
+                className="mt-4 flex items-center gap-2 bg-[#D32F3A] hover:bg-[#A02029] disabled:opacity-50 text-[#F5F5F5] font-semibold text-xs px-5 py-3 tracking-widest uppercase transition-colors">
+                {couponSaving ? <Loader2 size={14} className="animate-spin" /> : <Plus size={14} />} สร้างโค้ด
+              </button>
+            </form>
+
+            {/* Coupons list */}
+            {couponsLoading ? (
+              <div className="flex justify-center py-16"><Loader2 className="animate-spin text-[#D32F3A]" /></div>
+            ) : coupons.length === 0 ? (
+              <div className="text-center py-16 text-[#555] text-sm">ยังไม่มีโค้ดส่วนลด</div>
+            ) : (
+              <div className="flex flex-col gap-px bg-[#2B2B2E]">
+                {coupons.map((c) => (
+                  <div key={c.code} className="bg-[#1A1A1C] px-4 py-3 flex items-center gap-4 flex-wrap">
+                    <div className="flex items-center gap-2 min-w-[140px]">
+                      <Ticket size={14} className={c.active ? "text-[#4ade80]" : "text-[#555]"} />
+                      <span className={`font-bold tracking-wide ${c.active ? "text-[#F5F5F5]" : "text-[#555] line-through"}`}>{c.code}</span>
+                    </div>
+                    <span className="text-[#D32F3A] text-sm font-semibold">
+                      {c.type === "percent" ? `${c.value}%` : `฿${c.value}`}
+                      {c.type === "percent" && c.max_discount ? ` (สูงสุด ฿${c.max_discount})` : ""}
+                    </span>
+                    <span className="text-[#555] text-xs">
+                      {c.min_subtotal > 0 ? `ขั้นต่ำ ฿${c.min_subtotal.toLocaleString()}` : "ไม่มีขั้นต่ำ"}
+                    </span>
+                    <span className="text-[#555] text-xs">
+                      ใช้แล้ว {c.used_count}{c.usage_limit ? `/${c.usage_limit}` : ""} ครั้ง
+                    </span>
+                    {c.expires_at && (
+                      <span className="text-[#555] text-xs">หมด {new Date(c.expires_at).toLocaleDateString("th-TH")}</span>
+                    )}
+                    <div className="flex items-center gap-1 ml-auto">
+                      <button onClick={() => toggleCoupon(c.code, c.active)}
+                        title={c.active ? "ปิดใช้งาน" : "เปิดใช้งาน"}
+                        className="w-8 h-8 flex items-center justify-center text-[#555] hover:text-[#F5F5F5] hover:bg-[#2B2B2E] transition-colors">
+                        {c.active ? <Eye size={13} /> : <EyeOff size={13} />}
+                      </button>
+                      <button onClick={() => deleteCoupon(c.code)} title="ลบ"
+                        className="w-8 h-8 flex items-center justify-center text-[#555] hover:text-[#D32F3A] hover:bg-[#D32F3A]/10 transition-colors">
+                        <Trash2 size={13} />
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </>
+        )}
       </div>
     </div>
   );
 }
+
+const couponLabelCls = "text-[#555] text-[10px] font-semibold tracking-[0.15em] uppercase";
+const couponInputCls = "w-full bg-[#0F0F10] border border-[#2B2B2E] focus:border-[#D32F3A] text-[#F5F5F5] placeholder-[#3A3A3E] text-sm px-3 py-2.5 outline-none transition-colors";

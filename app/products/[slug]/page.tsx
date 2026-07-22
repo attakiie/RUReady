@@ -7,6 +7,7 @@ import { ArrowLeft, ShoppingBag, Check, AlertCircle, ChevronRight, Plus, Minus }
 import { createClient } from "@/app/lib/supabase";
 import { useLanguage } from "@/app/contexts/LanguageContext";
 import { useCart } from "@/app/contexts/CartContext";
+import ProductReviews from "@/app/components/product/ProductReviews";
 
 type Product = {
   id: string;
@@ -244,6 +245,9 @@ export default function ProductPage() {
             </div>
           </div>
         </div>
+
+        {/* Reviews */}
+        <ProductReviews productId={product.id} />
 
         {/* Related products */}
         {related.length > 0 && (

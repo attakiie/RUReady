@@ -44,6 +44,20 @@ const copy = {
     copied: "Copied!",
     copyPhone: "Copy number",
     newMemberDiscount: "New member discount",
+    couponLabel: "Discount code",
+    couponPlaceholder: "Enter code",
+    couponApply: "Apply",
+    couponRemove: "Remove",
+    couponDiscount: "Discount",
+    couponErrors: {
+      not_found: "Code not found",
+      inactive: "This code is no longer active",
+      not_started: "This code isn't active yet",
+      expired: "This code has expired",
+      used_up: "This code has reached its usage limit",
+      min_subtotal: "Minimum spend not met",
+      generic: "Couldn't apply code, please try again",
+    },
   },
   th: {
     title: "ชำระเงิน",
@@ -67,8 +81,24 @@ const copy = {
     copied: "คัดลอกแล้ว!",
     copyPhone: "คัดลอกเบอร์",
     newMemberDiscount: "ส่วนลดสมาชิกใหม่",
+    couponLabel: "โค้ดส่วนลด",
+    couponPlaceholder: "กรอกโค้ด",
+    couponApply: "ใช้โค้ด",
+    couponRemove: "เอาออก",
+    couponDiscount: "ส่วนลดจากโค้ด",
+    couponErrors: {
+      not_found: "ไม่พบโค้ดนี้",
+      inactive: "โค้ดนี้ถูกปิดใช้งานแล้ว",
+      not_started: "โค้ดนี้ยังไม่เริ่มใช้งาน",
+      expired: "โค้ดนี้หมดอายุแล้ว",
+      used_up: "โค้ดนี้ถูกใช้ครบจำนวนแล้ว",
+      min_subtotal: "ยอดสั่งซื้อยังไม่ถึงขั้นต่ำ",
+      generic: "ใช้โค้ดไม่สำเร็จ กรุณาลองใหม่",
+    },
   },
 };
+
+type AppliedCoupon = { code: string; discount: number };
 
 // GAS: tiered — first can ฿50, each additional can ฿30
 // Everything else (targets, accessories, 3D print, etc.): flat ฿30 per piece
@@ -108,12 +138,54 @@ export default function CheckoutPage() {
   const [addrDropdownOpen, setAddrDropdownOpen] = useState(false);
   const { isFirstOrder } = useFirstOrderEligibility();
 
+  // Coupon state
+  const [couponInput, setCouponInput] = useState("");
+  const [coupon, setCoupon] = useState<AppliedCoupon | null>(null);
+  const [couponError, setCouponError] = useState("");
+  const [couponLoading, setCouponLoading] = useState(false);
+
   const NEW_MEMBER_DISCOUNT = 30;
 
   const shipping = calcShipping(items);
-  const discount = isFirstOrder ? NEW_MEMBER_DISCOUNT : 0;
+  const memberDiscount = isFirstOrder ? NEW_MEMBER_DISCOUNT : 0;
+  const couponDiscount = coupon?.discount ?? 0;
+  const discount = memberDiscount + couponDiscount;
   const grandTotal = Math.max(0, subtotal + shipping - discount);
   const qrUrl = promptPayQRImageUrl(STORE_PHONE, grandTotal);
+
+  async function applyCoupon() {
+    const code = couponInput.trim();
+    if (!code) return;
+    setCouponError("");
+    setCouponLoading(true);
+    const supabase = createClient();
+    const { data, error: rpcErr } = await supabase.rpc("validate_coupon", {
+      p_code: code,
+      p_subtotal: subtotal,
+    });
+    setCouponLoading(false);
+    const res = data as { ok: boolean; reason?: string; discount?: number; code?: string; min?: number } | null;
+    if (rpcErr || !res) {
+      setCouponError(t.couponErrors.generic);
+      return;
+    }
+    if (!res.ok) {
+      const key = (res.reason ?? "generic") as keyof typeof t.couponErrors;
+      let msg = t.couponErrors[key] ?? t.couponErrors.generic;
+      if (res.reason === "min_subtotal" && res.min != null) msg = `${msg} (฿${res.min.toLocaleString()})`;
+      setCouponError(msg);
+      setCoupon(null);
+      return;
+    }
+    setCoupon({ code: res.code ?? code.toUpperCase(), discount: res.discount ?? 0 });
+    setCouponInput(res.code ?? code.toUpperCase());
+  }
+
+  function removeCoupon() {
+    setCoupon(null);
+    setCouponInput("");
+    setCouponError("");
+  }
 
   // Load saved addresses + prefill profile
   useEffect(() => {
@@ -196,6 +268,7 @@ export default function CheckoutPage() {
         subtotal,
         shipping,
         discount,
+        coupon_code: coupon?.code ?? "",
         total: grandTotal,
         status: "pending",
       })
@@ -231,6 +304,11 @@ export default function CheckoutPage() {
       );
       setLoading(false);
       return;
+    }
+
+    // Record coupon usage (best-effort; don't block the order flow on failure)
+    if (coupon?.code) {
+      await supabase.rpc("redeem_coupon", { p_code: coupon.code });
     }
 
     clearCart();
@@ -374,6 +452,38 @@ export default function CheckoutPage() {
                     );
                   })}
                 </div>
+                {/* Coupon input */}
+                <div className="px-5 py-4 border-t border-[#2B2B2E]">
+                  <label className="text-[#A5A5A5] text-xs font-semibold tracking-widest uppercase block mb-2">
+                    {t.couponLabel}
+                  </label>
+                  {coupon ? (
+                    <div className="flex items-center justify-between bg-[#4ade80]/10 border border-[#4ade80]/30 px-3 py-2.5">
+                      <span className="text-[#4ade80] text-sm font-semibold tracking-wide">{coupon.code}</span>
+                      <button type="button" onClick={removeCoupon}
+                        className="text-[#555] hover:text-[#D32F3A] text-xs uppercase tracking-widest transition-colors">
+                        {t.couponRemove}
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="flex gap-2">
+                      <input
+                        type="text"
+                        value={couponInput}
+                        onChange={(e) => setCouponInput(e.target.value.toUpperCase())}
+                        onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); applyCoupon(); } }}
+                        placeholder={t.couponPlaceholder}
+                        className="flex-1 bg-[#0F0F10] border border-[#2B2B2E] focus:border-[#D32F3A] text-[#F5F5F5] placeholder-[#3A3A3E] text-sm px-3 py-2.5 outline-none transition-colors tracking-wide uppercase"
+                      />
+                      <button type="button" onClick={applyCoupon} disabled={couponLoading || !couponInput.trim()}
+                        className="bg-[#2B2B2E] hover:bg-[#D32F3A] disabled:opacity-40 disabled:hover:bg-[#2B2B2E] text-[#F5F5F5] text-xs font-semibold uppercase tracking-widest px-4 transition-colors flex items-center gap-1.5">
+                        {couponLoading ? <Loader2 size={12} className="animate-spin" /> : t.couponApply}
+                      </button>
+                    </div>
+                  )}
+                  {couponError && <p className="text-[#D32F3A] text-xs mt-2">{couponError}</p>}
+                </div>
+
                 <div className="px-5 py-4 border-t border-[#2B2B2E] flex flex-col gap-2">
                   <div className="flex justify-between text-sm text-[#A5A5A5]">
                     <span>Subtotal</span><span>฿{subtotal.toLocaleString()}</span>
@@ -381,9 +491,14 @@ export default function CheckoutPage() {
                   <div className="flex justify-between text-sm text-[#A5A5A5]">
                     <span>{t.shippingFee}</span><span>฿{shipping}</span>
                   </div>
-                  {discount > 0 && (
+                  {memberDiscount > 0 && (
                     <div className="flex justify-between text-sm text-[#4ade80]">
-                      <span>{t.newMemberDiscount}</span><span>-฿{discount}</span>
+                      <span>{t.newMemberDiscount}</span><span>-฿{memberDiscount}</span>
+                    </div>
+                  )}
+                  {couponDiscount > 0 && (
+                    <div className="flex justify-between text-sm text-[#4ade80]">
+                      <span>{t.couponDiscount} ({coupon?.code})</span><span>-฿{couponDiscount.toLocaleString()}</span>
                     </div>
                   )}
                   <div className="flex justify-between text-lg font-bold text-[#F5F5F5] pt-2 border-t border-[#2B2B2E]">
