@@ -8,6 +8,7 @@ import { createClient } from "@/app/lib/supabase";
 import { useLanguage } from "@/app/contexts/LanguageContext";
 import { useCart } from "@/app/contexts/CartContext";
 import ProductReviews from "@/app/components/product/ProductReviews";
+import WishlistButton from "@/app/components/product/WishlistButton";
 
 type Product = {
   id: string;
@@ -150,6 +151,7 @@ export default function ProductPage() {
                 {product.tag}
               </span>
             )}
+            <WishlistButton productId={product.id} className="absolute top-4 right-4 z-10" />
             {img ? (
               <img src={img} alt={name} className="w-full h-full object-contain p-8" />
             ) : (

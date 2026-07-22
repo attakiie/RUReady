@@ -6,6 +6,7 @@ import { ArrowRight } from "lucide-react";
 import { useLanguage } from "@/app/contexts/LanguageContext";
 import { useCart } from "@/app/contexts/CartContext";
 import { createClient } from "@/app/lib/supabase";
+import WishlistButton from "@/app/components/product/WishlistButton";
 
 type Product = {
   id: string;
@@ -128,6 +129,7 @@ export default function FeaturedProducts() {
                           {product.tag}
                         </span>
                       )}
+                      <WishlistButton productId={product.id} className="absolute top-3 right-3 z-10" />
                       {img ? (
                         <img
                           src={img}

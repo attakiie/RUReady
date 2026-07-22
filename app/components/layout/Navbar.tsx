@@ -3,15 +3,16 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { ShoppingBag, Menu, X, User, LogOut, ChevronDown, Package, Shield, MapPin, ArrowRight } from "lucide-react";
+import { ShoppingBag, Menu, X, User, LogOut, ChevronDown, Package, Shield, MapPin, ArrowRight, Heart } from "lucide-react";
 import { useLanguage } from "@/app/contexts/LanguageContext";
 import { useCart } from "@/app/contexts/CartContext";
+import { useWishlist } from "@/app/contexts/WishlistContext";
 import { createClient } from "@/app/lib/supabase";
 import type { User as SupabaseUser } from "@supabase/supabase-js";
 
 const nav = {
-  en: { shop: "Shop", categories: "Categories", about: "About", login: "Login", register: "Join", account: "My Account", logout: "Logout", orders: "Orders", addresses: "Addresses", security: "Security" },
-  th: { shop: "ร้านค้า", categories: "หมวดหมู่", about: "เกี่ยวกับเรา", login: "เข้าสู่ระบบ", register: "สมัครสมาชิก", account: "บัญชีของฉัน", logout: "ออกจากระบบ", orders: "ออเดอร์", addresses: "ที่อยู่", security: "ความปลอดภัย" },
+  en: { shop: "Shop", categories: "Categories", about: "About", login: "Login", register: "Join", account: "My Account", logout: "Logout", orders: "Orders", addresses: "Addresses", security: "Security", wishlist: "Wishlist" },
+  th: { shop: "ร้านค้า", categories: "หมวดหมู่", about: "เกี่ยวกับเรา", login: "เข้าสู่ระบบ", register: "สมัครสมาชิก", account: "บัญชีของฉัน", logout: "ออกจากระบบ", orders: "ออเดอร์", addresses: "ที่อยู่", security: "ความปลอดภัย", wishlist: "รายการโปรด" },
 };
 
 export default function Navbar() {
@@ -24,6 +25,7 @@ export default function Navbar() {
   const t = nav[lang];
   const router = useRouter();
   const { count, setDrawerOpen } = useCart();
+  const { count: wishlistCount } = useWishlist();
 
   // Lock body scroll when mobile menu is open
   useEffect(() => {
@@ -155,6 +157,20 @@ export default function Navbar() {
                 {lang === "en" ? "TH" : "EN"}
               </button>
 
+              {/* Wishlist */}
+              <Link
+                href="/wishlist"
+                aria-label={lang === "th" ? "รายการโปรด" : "Wishlist"}
+                className="relative p-2 text-[#A5A5A5] hover:text-[#F5F5F5] transition-colors duration-200 hidden sm:inline-flex"
+              >
+                <Heart size={20} />
+                {wishlistCount > 0 && (
+                  <span className="absolute -top-0.5 -right-0.5 min-w-[18px] h-[18px] bg-[#D32F3A] rounded-full text-[#F5F5F5] text-[10px] font-bold flex items-center justify-center px-1">
+                    {wishlistCount > 99 ? "99+" : wishlistCount}
+                  </span>
+                )}
+              </Link>
+
               {/* Cart */}
               <button
                 aria-label="Cart"
@@ -228,6 +244,7 @@ export default function Navbar() {
               <p className="text-[#3A3A3E] text-[10px] font-semibold tracking-[0.2em] uppercase px-3 mb-1">เมนูหลัก</p>
               <PanelLink href="/shop" onClick={close} icon={<ShoppingBag size={15} />}>{t.shop}</PanelLink>
               <PanelLink href="/categories" onClick={close} icon={<span className="w-4 h-4 flex items-center justify-center text-[10px] font-bold border border-current">4</span>}>{t.categories}</PanelLink>
+              <PanelLink href="/wishlist" onClick={close} icon={<Heart size={15} />}>{t.wishlist}</PanelLink>
               <PanelLink href="/about" onClick={close} icon={<span className="w-4 h-4 border-b border-current inline-block" />}>{t.about}</PanelLink>
             </div>
 

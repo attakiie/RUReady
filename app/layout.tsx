@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { LanguageProvider } from "@/app/contexts/LanguageContext";
 import { CartProvider } from "@/app/contexts/CartContext";
+import { WishlistProvider } from "@/app/contexts/WishlistContext";
 import CartDrawer from "@/app/components/cart/CartDrawer";
 import Navbar from "@/app/components/layout/Navbar";
 import AnnouncementBar from "@/app/components/layout/AnnouncementBar";
@@ -74,10 +75,12 @@ export default function RootLayout({
         >
           <LanguageProvider>
             <CartProvider>
-              <AnnouncementBar />
-              <Navbar />
-              <CartDrawer />
-              {children}
+              <WishlistProvider>
+                <AnnouncementBar />
+                <Navbar />
+                <CartDrawer />
+                {children}
+              </WishlistProvider>
             </CartProvider>
           </LanguageProvider>
         </div>

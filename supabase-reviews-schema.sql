@@ -47,3 +47,13 @@ CREATE POLICY "Admin manage reviews"
   ON public.reviews FOR ALL
   USING (EXISTS (SELECT 1 FROM public.profiles WHERE profiles.id = auth.uid() AND profiles.is_admin = true))
   WITH CHECK (EXISTS (SELECT 1 FROM public.profiles WHERE profiles.id = auth.uid() AND profiles.is_admin = true));
+
+-- 3. View: ดาวเฉลี่ย + จำนวนรีวิวต่อสินค้า (ใช้โชว์บนการ์ดสินค้า)
+CREATE OR REPLACE VIEW public.product_ratings AS
+SELECT product_id,
+       ROUND(AVG(rating)::numeric, 1) AS avg,
+       COUNT(*)::int                  AS count
+FROM public.reviews
+GROUP BY product_id;
+
+GRANT SELECT ON public.product_ratings TO anon, authenticated;

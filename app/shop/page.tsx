@@ -3,9 +3,10 @@
 import { Suspense, useEffect, useState, useMemo } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import Link from "next/link";
-import { Search, SlidersHorizontal, ArrowRight, X } from "lucide-react";
+import { Search, SlidersHorizontal, ArrowRight, X, Star } from "lucide-react";
 import { createClient } from "@/app/lib/supabase";
 import { useLanguage } from "@/app/contexts/LanguageContext";
+import WishlistButton from "@/app/components/product/WishlistButton";
 
 type Product = {
   id: string;
@@ -75,6 +76,7 @@ function ShopContent() {
 
   const [products, setProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
+  const [ratings, setRatings] = useState<Record<string, { avg: number; count: number }>>({});
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState("default");
@@ -83,12 +85,18 @@ function ShopContent() {
   useEffect(() => {
     async function fetchData() {
       const supabase = createClient();
-      const [{ data: prods }, { data: cats }] = await Promise.all([
+      const [{ data: prods }, { data: cats }, { data: rats }] = await Promise.all([
         supabase.from("products").select("*").eq("is_active", true),
         supabase.from("categories").select("id, name_en, name_th").order("sort_order"),
+        supabase.from("product_ratings").select("product_id, avg, count"),
       ]);
       setProducts(prods ?? []);
       setCategories(cats ?? []);
+      const map: Record<string, { avg: number; count: number }> = {};
+      (rats ?? []).forEach((r: { product_id: string; avg: number; count: number }) => {
+        map[r.product_id] = { avg: Number(r.avg), count: Number(r.count) };
+      });
+      setRatings(map);
       setLoading(false);
     }
     fetchData();
@@ -199,7 +207,7 @@ function ShopContent() {
       ) : (
         <div className="grid grid-cols-2 lg:grid-cols-3 gap-px bg-[#2B2B2E]">
           {filtered.map((product) => (
-            <ProductCard key={product.id} product={product} t={t} lang={lang} />
+            <ProductCard key={product.id} product={product} t={t} lang={lang} rating={ratings[product.id]} />
           ))}
         </div>
       )}
@@ -265,11 +273,12 @@ function CategoryChip({
 }
 
 function ProductCard({
-  product, t, lang,
+  product, t, lang, rating,
 }: {
   product: Product;
   t: typeof copy.en;
   lang: "en" | "th";
+  rating?: { avg: number; count: number };
 }) {
   const name = lang === "en" ? product.name_en : product.name_th;
   const img = product.images?.[0] ?? null;
@@ -284,6 +293,7 @@ function ProductCard({
               {product.tag}
             </span>
           )}
+          <WishlistButton productId={product.id} className="absolute top-3 right-3 z-10" />
           {img ? (
             <img
               src={img}
@@ -316,6 +326,13 @@ function ProductCard({
               <span className="text-[9px] sm:text-[10px] text-[#A5A5A5] tracking-widest uppercase">{t.outOfStock}</span>
             )}
           </div>
+          {rating && rating.count > 0 && (
+            <div className="flex items-center gap-1 mt-1">
+              <Star size={11} className="text-[#f5b301]" fill="#f5b301" />
+              <span className="text-[#F5F5F5] text-[10px] sm:text-xs font-semibold">{rating.avg.toFixed(1)}</span>
+              <span className="text-[#555] text-[9px] sm:text-[10px]">({rating.count})</span>
+            </div>
+          )}
           <p className="text-[9px] sm:text-[10px] text-[#D32F3A]/80 mt-1">
             🔥 {t.firstOrderHint}
           </p>
